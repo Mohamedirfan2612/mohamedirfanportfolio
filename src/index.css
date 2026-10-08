@@ -74,12 +74,12 @@ body {
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg-1); }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--purple), var(--cyan));
+  background: linear-gradient(180deg, var(--blue-mid), var(--cyan));
   border-radius: 99px;
 }
 
 /* Selection */
-::selection { background: var(--purple); color: #fff; }
+::selection { background: var(--blue); color: #fff; }
 
 /* =========================================
    GLOBAL NOISE BACKGROUND
