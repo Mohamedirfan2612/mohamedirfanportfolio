@@ -5,6 +5,16 @@ import CursorVideoPortrait from './CursorVideoPortrait';
 import heroVideo from '../videos/portfoliovideo.mp4';
 import { ArrowRight, Terminal, Mail, Download, MapPin } from 'lucide-react';
 
+// The source video contains real gaze poses at different points in time.
+// Keep the original video pixels and select the closest natural pose.
+const HERO_GAZE_KEYS = Object.freeze({
+  center: 0.1,
+  right: 2.5,
+  down: 4.5,
+  up: 6.25,
+  left: 7.5,
+});
+
 export default function Hero() {
   return (
     <header
@@ -31,13 +41,14 @@ export default function Hero() {
           }}
           className="hero-grid"
         >
-          {/* === LEFT: Real-Time Cursor-Synced Video Portrait === */}
+          {/* === LEFT: Real-Time Cursor-Tracking Video Portrait === */}
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <CursorVideoPortrait
               src={heroVideo}
               width={280}
               height={460}
-              smoothing={0.15}
+              keys={HERO_GAZE_KEYS}
+              snapPoses
             />
           </div>
 

@@ -2,47 +2,47 @@ import React, { useEffect, useRef, useState } from "react";
 import "./CursorVideoPortrait.css";
 
 /**
- * Cursor-synced portrait using YOUR ORIGINAL VIDEO (left / right / up / down).
+ * Cursor-synced portrait using YOUR ORIGINAL VIDEO.
  *
- * The video is a 1-D timeline, so we tell the component WHERE in the video each
- * pose happens (in seconds) using the `keys` prop:
+ * DEFAULT (no setup): cursor X position scrubs the video, working immediately:
+ *   <CursorVideoPortrait src="/look_scrub.mp4" poster="/center.jpg" />
  *
- *   keys={{ center: 0.0, left: 1.2, right: 2.6, up: 3.8, down: 5.0 }}
+ * Tuning props:
+ *   start, end   part of the video to use, in seconds (end=0 -> whole video)
+ *   centerAt     0..1, where in that range you look straight ahead (default .5)
+ *   reverse      flip direction if the head turns away from the cursor
+ *   smoothing    0.08 floaty .. 0.25 snappy
+ *   deadzone     ignore tiny movement near the face (0..0.1)
+ *   keys         optional calibrated video times for center/left/right/up/down
+ *   snapPoses    use the source video's natural pose frames directly
  *
- * "left" = the frame where the face looks toward the LEFT of the screen at its
- * maximum, and so on. Cursor distance from the face blends between `center`
- * and that pose, so the head follows the cursor smoothly in any direction.
- *
- * Don't know the times? Add `debug` (or leave `keys` out). A scrubber appears:
- * drag to the exact frame, press the pose button, then copy the JSON it prints.
+ * OPTIONAL calibration tool: add `debug` to get a scrubber that prints exact
+ * times, and `keys={{center,left,right,up,down}}` to use pose-based mapping.
  */
-const POSES = ["center", "left", "right", "up", "down"];
-
 export default function CursorVideoPortrait({
   src,
   poster,
+  start = 0,
+  end = 0,
+  centerAt = 0.5,
+  reverse = false,
+  smoothing = 0.15,
+  deadzone = 0.02,
   keys,
+  snapPoses = false,
   debug = false,
-  smoothing = 0.18, // 0.1 floaty .. 0.3 snappy
-  reachX = 0.35,    // fraction of window width for full left/right turn
-  reachY = 0.35,    // fraction of window height for full up/down turn
-  deadzone = 0.03,  // ignore tiny movement near the face (stops jitter)
   width = 270,
   height = 480,
 }) {
   const cardRef = useRef(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const keysRef = useRef(keys);
-  keysRef.current = keys;
-
-  const calibrating = debug || !keys;
-  const calRef = useRef(calibrating);
-  calRef.current = calibrating;
+  const debugRef = useRef(debug);
+  debugRef.current = debug;
 
   const [dur, setDur] = useState(0);
   const [time, setTime] = useState(0);
-  const [saved, setSaved] = useState(keys || {});
+  const [saved, setSaved] = useState({});
 
   useEffect(() => {
     const card = cardRef.current;
@@ -52,17 +52,20 @@ export default function CursorVideoPortrait({
     const ctx = canvas.getContext("2d");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    const range = { a: start, b: end };
     let cur = { x: 0, y: 0 };
     let tgt = { x: 0, y: 0 };
     let lastSeek = -1;
+    let seekInFlight = false;
     let raf = 0;
-    let idle = 0;
     let ready = false;
 
     const draw = () => {
       if (video.readyState < 2) return;
-      const vw = video.videoWidth, vh = video.videoHeight;
-      const cw = canvas.width, ch = canvas.height;
+      const vw = video.videoWidth;
+      const vh = video.videoHeight;
+      const cw = canvas.width;
+      const ch = canvas.height;
       if (!vw || !vh) return;
       const s = Math.max(cw / vw, ch / vh);
       ctx.drawImage(video, (cw - vw * s) / 2, (ch - vh * s) / 2, vw * s, vh * s);
@@ -81,28 +84,33 @@ export default function CursorVideoPortrait({
       return Math.sign(n) * Math.min(1, (a - deadzone) / (1 - deadzone));
     };
 
-    // vector (-1..1, -1..1) -> time in video
     const timeFor = (x, y) => {
-      const k = keysRef.current;
-      if (!k) return 0;
-      const horizontal = Math.abs(x) >= Math.abs(y);
-      const m = horizontal ? Math.abs(x) : Math.abs(y);
-      const pose = horizontal
-        ? (x < 0 ? (k.left ?? k.center ?? 0) : (k.right ?? k.center ?? 0))
-        : (y < 0 ? (k.up ?? k.center ?? 0) : (k.down ?? k.center ?? 0));
-      const center = k.center ?? 0;
-      return center + (pose - center) * m;
+      // pose-based mode (only if keys are provided)
+      if (keys) {
+        const horizontal = Math.abs(x) >= Math.abs(y);
+        const m = horizontal ? Math.abs(x) : Math.abs(y);
+        const pose = horizontal ? (x < 0 ? keys.left : keys.right) : y < 0 ? keys.up : keys.down;
+        if (snapPoses) return m < 0.12 ? keys.center : pose;
+        const poseTime = keys.center + (pose - keys.center) * m;
+        return Math.min(range.b, Math.max(range.a, poseTime));
+      }
+      // default: horizontal scrub across the video range
+      const span = range.b - range.a;
+      const half = x < 0 ? centerAt : 1 - centerAt;
+      let t01 = centerAt + x * half;
+      if (reverse) t01 = 1 - t01;
+      return range.a + Math.min(1, Math.max(0, t01)) * span;
     };
 
     const setFromPoint = (px, py) => {
       const r = card.getBoundingClientRect();
-      // aim at the EYE LEVEL of the face (about 35% from the top of the card)
       const cx = r.left + r.width / 2;
       const cy = r.top + r.height * 0.35;
-      tgt.x = dz(Math.max(-1, Math.min(1, (px - cx) / (window.innerWidth * reachX))));
-      tgt.y = dz(Math.max(-1, Math.min(1, (py - cy) / (window.innerHeight * reachY))));
-      clearTimeout(idle);
-      idle = setTimeout(() => { tgt.x = 0; tgt.y = 0; }, 3000);
+      // normalise by the distance to the screen edge on that side
+      const sx = px < cx ? cx : window.innerWidth - cx;
+      const sy = py < cy ? cy : window.innerHeight - cy;
+      tgt.x = dz(Math.max(-1, Math.min(1, (px - cx) / Math.max(sx, 1))));
+      tgt.y = dz(Math.max(-1, Math.min(1, (py - cy) / Math.max(sy, 1))));
     };
 
     const onMove = (e) => setFromPoint(e.clientX, e.clientY);
@@ -110,34 +118,41 @@ export default function CursorVideoPortrait({
     const onLeave = () => { tgt.x = 0; tgt.y = 0; };
 
     const tick = () => {
-      if (ready && !calRef.current) {
+      if (ready && !debugRef.current) {
         cur.x += (tgt.x - cur.x) * smoothing;
         cur.y += (tgt.y - cur.y) * smoothing;
         if (Math.abs(tgt.x - cur.x) < 0.0005) cur.x = tgt.x;
         if (Math.abs(tgt.y - cur.y) < 0.0005) cur.y = tgt.y;
 
         const t = timeFor(cur.x, cur.y);
-        if (!video.seeking && Math.abs(t - lastSeek) > 0.008) {
+        // Queue the newest target while the decoder is busy, then apply it as
+        // soon as the current seek completes. Writing currentTime every frame
+        // can keep the decoder in a permanent seeking state.
+        if (Math.abs(t - lastSeek) > 1 / 120) {
           lastSeek = t;
-          if (typeof video.fastSeek === 'function') {
-            video.fastSeek(t);
-          } else {
-            video.currentTime = t;
-          }
+        }
+        if (!seekInFlight && Math.abs(lastSeek - video.currentTime) > 1 / 120) {
+          seekInFlight = true;
+          video.currentTime = lastSeek;
         }
       }
       raf = requestAnimationFrame(tick);
     };
 
     const onMeta = () => {
+      if (ready) return;
+      if (!range.b || range.b > video.duration) range.b = video.duration;
       ready = true;
       video.pause();
       setDur(video.duration);
-      const k = keysRef.current;
-      video.currentTime = k && k.center !== undefined ? k.center : 0;
+      video.currentTime = timeFor(0, 0);
       resize();
     };
-    const onSeeked = () => { draw(); setTime(video.currentTime); };
+    const onSeeked = () => {
+      seekInFlight = false;
+      draw();
+      setTime(video.currentTime);
+    };
     const onError = () => card.classList.add("cvp--fallback");
 
     video.addEventListener("loadedmetadata", onMeta);
@@ -155,7 +170,6 @@ export default function CursorVideoPortrait({
 
     return () => {
       cancelAnimationFrame(raf);
-      clearTimeout(idle);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("touchmove", onTouch);
       document.removeEventListener("mouseleave", onLeave);
@@ -163,21 +177,10 @@ export default function CursorVideoPortrait({
       video.removeEventListener("seeked", onSeeked);
       video.removeEventListener("error", onError);
     };
-  }, [src, smoothing, reachX, reachY, deadzone, width, height]);
+  }, [src, start, end, centerAt, reverse, smoothing, deadzone, keys, snapPoses, width, height]);
 
-  const scrub = (v) => {
-    if (videoRef.current) {
-      videoRef.current.currentTime = Number(v);
-    }
-  };
-
-  const save = (pose) => {
-    if (videoRef.current) {
-      const newSaved = { ...saved, [pose]: Number(videoRef.current.currentTime.toFixed(2)) };
-      setSaved(newSaved);
-      console.log("Saved poses:", newSaved);
-    }
-  };
+  const save = (pose) =>
+    setSaved((s) => ({ ...s, [pose]: Number(videoRef.current.currentTime.toFixed(2)) }));
 
   return (
     <div className="cvp-wrap">
@@ -187,7 +190,7 @@ export default function CursorVideoPortrait({
         <video ref={videoRef} className="cvp__video" src={src} muted playsInline preload="auto" aria-hidden="true" />
       </div>
 
-      {calibrating && (
+      {debug && (
         <div className="cvp-debug" style={{ width }}>
           <input
             type="range"
@@ -195,12 +198,12 @@ export default function CursorVideoPortrait({
             max={dur || 1}
             step="0.01"
             value={time}
-            onChange={(e) => scrub(e.target.value)}
+            onChange={(e) => (videoRef.current.currentTime = Number(e.target.value))}
             style={{ width: "100%", accentColor: "#3b82f6" }}
           />
           <div className="cvp-debug__time">{time.toFixed(2)}s / {dur.toFixed(2)}s</div>
           <div className="cvp-debug__btns">
-            {POSES.map((p) => (
+            {["center", "left", "right", "up", "down"].map((p) => (
               <button key={p} onClick={() => save(p)}>
                 {p}{saved[p] !== undefined ? ` ✓ ${saved[p]}` : ""}
               </button>
