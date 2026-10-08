@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import AudioVisualizer from './AudioVisualizer';
 import { Code2, Menu, X, ArrowUpRight } from 'lucide-react';
 
 const navLinks = [
@@ -154,8 +153,6 @@ export default function Navbar() {
 
           {/* Right Controls */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-            <AudioVisualizer />
-
             <a
               href="#contact"
               className="hide-mobile"
