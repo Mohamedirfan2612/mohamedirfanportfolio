@@ -1,0 +1,379 @@
+/* =========================================
+   HORIZONTAL "MY WORK" SCROLL SECTION
+   ========================================= */
+
+.work-horizontal-wrapper {
+  position: relative;
+  background: #04060e;
+  /* Extra vertical scroll runway so mouse wheel translates cards */
+  height: 380vh;
+}
+
+.work-sticky-viewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.12) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+              #04060e;
+  z-index: 10;
+}
+
+/* Header */
+.work-header-bar {
+  padding: 30px 48px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.work-title-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.work-glowing-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.9), 0 0 45px rgba(37, 99, 235, 0.6);
+  flex-shrink: 0;
+  animation: pulse-dot 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.8), 0 0 40px rgba(37, 99, 235, 0.5);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 30px rgba(56, 189, 248, 1), 0 0 60px rgba(37, 99, 235, 0.8);
+  }
+}
+
+.work-main-title {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.work-main-title span {
+  background: linear-gradient(135deg, #ffffff 15%, #60a5fa 55%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.work-hint-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-code, monospace);
+  font-size: 0.82rem;
+  color: var(--text-300, #94a3b8);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 16px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.work-hint-arrows {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #38bdf8;
+  animation: arrow-sway 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes arrow-sway {
+  from { transform: translateX(-3px); }
+  to { transform: translateX(3px); }
+}
+
+/* Horizontal Track Container */
+.work-track-wrapper {
+  position: relative;
+  width: 100%;
+  height: 62vh;
+  min-height: 440px;
+  max-height: 580px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+}
+
+.work-horizontal-track {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  will-change: transform;
+  padding-left: 48px;
+  padding-right: 120px;
+}
+
+/* Individual Project Card Column */
+.work-card-column {
+  width: 500px;
+  min-width: 500px;
+  height: 100%;
+  padding: 24px 36px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.work-card-column:hover {
+  background: rgba(255, 255, 255, 0.015);
+  border-right-color: rgba(56, 189, 248, 0.35);
+}
+
+/* Card Information Block (Number, Title, Tools) */
+.work-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.work-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.work-card-number {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: clamp(3rem, 4vw, 4.2rem);
+  font-weight: 800;
+  line-height: 0.95;
+  color: #ffffff;
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+}
+
+.work-card-meta {
+  text-align: right;
+}
+
+.work-card-title {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 3px;
+  transition: color 0.25s ease;
+}
+
+.work-card-column:hover .work-card-title {
+  color: #38bdf8;
+}
+
+.work-card-category {
+  font-family: var(--font-code, monospace);
+  font-size: 0.8rem;
+  color: var(--text-300, #94a3b8);
+  letter-spacing: 0.04em;
+}
+
+.work-card-subhead {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-top: 10px;
+  margin-bottom: 2px;
+}
+
+.work-card-tools {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.82rem;
+  color: #94a3b8;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Card Visual Graphic Mockup */
+.work-card-visual {
+  width: 100%;
+  height: 240px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #090e1a;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+  flex-shrink: 0;
+}
+
+.work-card-column:hover .work-card-visual {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(37, 99, 235, 0.35);
+}
+
+.work-card-visual svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Footer / Progress Bar */
+.work-footer-bar {
+  padding: 16px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.work-progress-rail {
+  width: 240px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+
+.work-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1d4ed8, #3b82f6, #38bdf8);
+  border-radius: 99px;
+  transform-origin: left;
+  transition: transform 0.1s linear;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+}
+
+.work-count-badge {
+  font-family: var(--font-code, monospace);
+  font-size: 0.82rem;
+  color: var(--text-300, #94a3b8);
+}
+
+/* Left Social Dock (matching screenshot) */
+.work-left-dock {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  z-index: 5;
+}
+
+.work-dock-link {
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.work-dock-link:hover {
+  color: #38bdf8;
+  transform: scale(1.15);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .work-header-bar {
+    padding: 24px 24px 16px;
+  }
+  .work-horizontal-track {
+    padding-left: 24px;
+    padding-right: 60px;
+  }
+  .work-card-column {
+    width: 440px;
+    min-width: 440px;
+    padding: 20px 24px;
+  }
+  .work-left-dock {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .work-horizontal-wrapper {
+    height: auto;
+  }
+
+  .work-sticky-viewport {
+    position: relative;
+    top: auto;
+    height: auto;
+    padding: 60px 0 80px;
+  }
+
+  .work-header-bar {
+    padding: 0 20px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .work-track-wrapper {
+    height: auto;
+    max-height: none;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+  }
+
+  .work-horizontal-track {
+    transform: none !important;
+    padding-left: 20px;
+    padding-right: 40px;
+    gap: 20px;
+  }
+
+  .work-card-column {
+    width: 85vw;
+    min-width: 85vw;
+    max-width: 360px;
+    height: 480px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    scroll-snap-align: center;
+  }
+
+  .work-card-visual {
+    height: 200px;
+  }
+
+  .work-footer-bar {
+    display: none;
+  }
+}
