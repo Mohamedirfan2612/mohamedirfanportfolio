@@ -1,0 +1,97 @@
+.loader {
+  --bg: #05080f;
+  --text: #f1f5f9;
+  --muted: #8da0bd;
+  --accent: #3b82f6;
+  --accent-light: #7db4ff;
+
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, sans-serif;
+  transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.loader--leaving { transform: translateY(-100%); }
+.loader--leaving .loader__content { opacity: 0; transform: translateY(-16px); }
+
+.loader__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(560px 460px at 60% 42%, rgba(37, 99, 235, 0.2), transparent 70%),
+    linear-gradient(rgba(148, 163, 184, 0.045) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(90deg, rgba(148, 163, 184, 0.045) 1px, transparent 1px) 0 0 / 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse at 55% 45%, #000 25%, transparent 75%);
+          mask-image: radial-gradient(ellipse at 55% 45%, #000 25%, transparent 75%);
+  pointer-events: none;
+}
+
+.loader__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: opacity 0.4s ease, transform 0.5s ease;
+}
+
+/* 3D stage (three.js canvas is mounted here) */
+.loader__stage {
+  width: min(640px, 94vw);
+  aspect-ratio: 1.22 / 1;
+  max-height: 58vh;
+  animation: ld-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes ld-in { from { opacity: 0; transform: translateY(18px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+.loader__count {
+  margin: 8px 0 12px;
+  font: 500 15px/1 "JetBrains Mono", ui-monospace, monospace;
+  letter-spacing: 0.1em;
+}
+.loader__count span { color: var(--muted); margin-left: 2px; }
+
+.loader__progress {
+  width: min(260px, 60vw);
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(148, 163, 184, 0.16);
+  overflow: hidden;
+}
+.loader__progress span {
+  display: block;
+  height: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.8);
+}
+
+.loader__msg {
+  margin: 14px 0 0;
+  font: 400 12px/1 "JetBrains Mono", ui-monospace, monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.loader__msg i {
+  font-style: normal;
+  display: inline-block;
+  width: 1.4em;
+  text-align: left;
+  overflow: hidden;
+  vertical-align: bottom;
+  animation: ld-dots 1.2s steps(4, end) infinite;
+}
+@keyframes ld-dots { from { width: 0; } to { width: 1.4em; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .loader { transition: opacity 0.3s ease; }
+  .loader--leaving { transform: none; opacity: 0; }
+  .loader__stage, .loader__msg i { animation: none; }
+  .loader__msg i { width: 1.4em; }
+}

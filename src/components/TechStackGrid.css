@@ -1,0 +1,315 @@
+/* =========================================
+   TECH STACK - INVERTED PYRAMID TUNNEL GRID
+========================================= */
+
+.tech-stack-section {
+  position: relative;
+  padding: 100px 0 120px;
+  overflow: hidden;
+  background: #04060e;
+}
+
+/* Background Perspective Tunnel Mesh (matching user reference) */
+.tech-stack-bg-mesh {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tech-stack-glow {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, rgba(37, 99, 235, 0.16) 40%, transparent 70%);
+  filter: blur(50px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -45%);
+}
+
+.tech-stack-grid-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.45;
+}
+
+/* Header */
+.tech-stack-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.tech-stack-title {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  text-shadow: 0 0 40px rgba(129, 140, 248, 0.35);
+}
+
+.tech-stack-subtitle {
+  color: var(--text-300, #94a3b8);
+  font-size: 0.98rem;
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Inverted Pyramid Container */
+.tech-pyramid-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.tech-pyramid-desktop {
+  display: flex;
+}
+
+.tech-pyramid-mobile {
+  display: none;
+}
+
+.tech-pyramid-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+/* Individual Tech Tile (Translucent Rounded Glass Cards) */
+.tech-tile {
+  position: relative;
+  width: 82px;
+  height: 86px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 6px 8px;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.tech-tile:hover,
+.tech-tile--active {
+  transform: translateY(-6px) scale(1.06);
+  background: rgba(15, 23, 42, 0.75);
+  border-color: var(--tile-accent, #818cf8);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.7),
+    0 0 25px var(--tile-accent, rgba(129, 140, 248, 0.45));
+}
+
+/* Tile Icon (Grayscale/monochrome by default, pops to full color on hover) */
+.tech-tile-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: grayscale(100%) opacity(0.6) brightness(0.9);
+  transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tech-tile-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.tech-tile:hover .tech-tile-icon,
+.tech-tile--active .tech-tile-icon {
+  filter: grayscale(0%) opacity(1) brightness(1);
+  transform: scale(1.15);
+}
+
+/* Tile Label (Muted gray by default, crisp white on hover) */
+.tech-tile-name {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #7b8ba1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+  letter-spacing: 0.01em;
+  transition: color 0.25s ease, font-weight 0.25s ease;
+}
+
+.tech-tile:hover .tech-tile-name,
+.tech-tile--active .tech-tile-name {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Badge (e.g. 10% Learning / category tags) */
+.tech-tile-badge {
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  font-family: var(--font-code, monospace);
+  font-size: 0.58rem;
+  font-weight: 600;
+  padding: 2px 5px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.tech-tile:hover .tech-tile-badge,
+.tech-tile--active .tech-tile-badge {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* DevOps Learning Highlight */
+.tech-tile--learning {
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+.tech-tile-badge--learning {
+  opacity: 0.9;
+  transform: translateY(0);
+  background: rgba(15, 23, 42, 0.9);
+  color: #7dd3fc;
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.2);
+}
+
+.tech-tile:hover .tech-tile-badge--learning,
+.tech-tile--active .tech-tile-badge--learning {
+  background: rgba(37, 99, 235, 0.95);
+  color: #ffffff;
+  border-color: rgba(96, 165, 250, 0.8);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.85);
+  animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% {
+    box-shadow: 0 0 6px rgba(56, 189, 248, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.9);
+  }
+}
+
+/* Tablet refinements (681px to 900px) */
+@media (max-width: 900px) and (min-width: 681px) {
+  .tech-pyramid-desktop .tech-tile {
+    width: 72px;
+    height: 76px;
+    border-radius: 15px;
+    gap: 6px;
+    padding: 8px 4px 6px;
+  }
+  .tech-pyramid-desktop .tech-tile-icon {
+    width: 24px;
+    height: 24px;
+  }
+  .tech-pyramid-desktop .tech-tile-name {
+    font-size: 0.62rem;
+  }
+  .tech-pyramid-desktop .tech-pyramid-row {
+    gap: 8px;
+  }
+}
+
+/* Mobile refinements (<= 680px) */
+@media (max-width: 680px) {
+  .tech-stack-section {
+    padding: 60px 10px 140px;
+  }
+
+  .tech-stack-header {
+    margin-bottom: 30px;
+  }
+
+  .tech-stack-title {
+    font-size: 2.2rem;
+  }
+
+  .tech-stack-subtitle {
+    font-size: 0.88rem;
+    padding: 0 10px;
+  }
+
+  .tech-pyramid-desktop {
+    display: none !important;
+  }
+
+  .tech-pyramid-mobile {
+    display: flex !important;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .tech-pyramid-mobile .tech-pyramid-row {
+    gap: 7px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .tech-pyramid-mobile .tech-tile {
+    width: clamp(54px, 15vw, 64px);
+    height: clamp(62px, 16vw, 72px);
+    border-radius: 13px;
+    gap: 5px;
+    padding: 7px 2px 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  .tech-pyramid-mobile .tech-tile-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .tech-pyramid-mobile .tech-tile-name {
+    font-size: 0.56rem;
+    letter-spacing: -0.01em;
+  }
+
+  .tech-pyramid-mobile .tech-tile-badge {
+    font-size: 0.46rem;
+    padding: 1px 4px;
+    top: -5px;
+    right: -3px;
+  }
+
+  .tech-stack-glow {
+    width: 320px;
+    height: 380px;
+    filter: blur(40px);
+  }
+}

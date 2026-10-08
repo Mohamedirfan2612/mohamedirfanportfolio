@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Preloader from './components/Preloader';
+import Loader from './components/Loader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import MarqueeBanner from './components/MarqueeBanner';
 import WhatIDo from './components/WhatIDo';
 import ExperienceTimeline from './components/ExperienceTimeline';
 import Projects from './components/Projects';
-import SkillsMatrix from './components/SkillsMatrix';
+import TechStackGrid from './components/TechStackGrid';
 import TerminalPlayground from './components/TerminalPlayground';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -19,26 +19,22 @@ export default function App() {
       {/* Background layer */}
       <div className="site-bg" />
 
-      {/* Preloader */}
-      {loading && <Preloader onComplete={() => setLoading(false)} />}
+      {/* Full-screen portfolio loader */}
+      {loading && <Loader onDone={() => setLoading(false)} initials="MI" />}
 
-      {/* App */}
-      {!loading && (
-        <>
-          <Navbar />
-          <main>
-            <Hero />
-            <MarqueeBanner />
-            <WhatIDo />
-            <ExperienceTimeline />
-            <Projects />
-            <SkillsMatrix />
-            <TerminalPlayground />
-            <Contact />
-          </main>
-          <Footer />
-        </>
-      )}
+      {/* Portfolio Content */}
+      <Navbar />
+      <main>
+        <Hero />
+        <MarqueeBanner />
+        <WhatIDo />
+        <ExperienceTimeline />
+        <Projects />
+        <TechStackGrid />
+        <TerminalPlayground />
+        <Contact />
+      </main>
+      <Footer />
     </div>
   );
 }
