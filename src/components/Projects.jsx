@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ProjectModal from './ProjectModal';
-import { ArrowLeftRight, ExternalLink } from 'lucide-react';
+import { ExternalLink, Layers } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, TwitterIcon } from './Icons';
 import './Projects.css';
 
 // =========================================================================
-// DUMMY PROJECTS DATA (Matching reference image + user tech stack)
+// PROJECTS DATA (Preserving all SVGs, descriptions, highlights, and tools)
 // =========================================================================
 const PROJECTS = [
   {
@@ -24,29 +24,24 @@ const PROJECTS = [
     liveUrl: 'https://github.com',
     githubUrl: 'https://github.com',
     visual: (
-      <svg viewBox="0 0 460 230" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="460" height="230" fill="#080f1e" />
-        {/* Subtle grid background */}
-        <path d="M0 40h460M0 80h460M0 120h460M0 160h460M0 200h460" stroke="rgba(56,189,248,0.06)" strokeWidth="1"/>
-        <path d="M60 0v230M140 0v230M220 0v230M300 0v230M380 0v230" stroke="rgba(56,189,248,0.06)" strokeWidth="1"/>
+      <svg viewBox="0 0 520 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="520" height="250" fill="#080f1e" />
+        <path d="M0 50h520M0 100h520M0 150h520M0 200h520" stroke="rgba(56,189,248,0.06)" strokeWidth="1"/>
+        <path d="M65 0v250M130 0v250M195 0v250M260 0v250M325 0v250M390 0v250M455 0v250" stroke="rgba(56,189,248,0.06)" strokeWidth="1"/>
 
-        {/* Title overlay */}
-        <text x="230" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">Drishti</text>
-        <text x="230" y="56" textAnchor="middle" fill="#67e8f9" fontSize="10.5" fontFamily="monospace" letterSpacing="1">BANGLADESH'S FIRST AI LARGE LANGUAGE MODEL</text>
+        <text x="260" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">Drishti</text>
+        <text x="260" y="56" textAnchor="middle" fill="#67e8f9" fontSize="10.5" fontFamily="monospace" letterSpacing="1">BANGLADESH'S FIRST AI LARGE LANGUAGE MODEL</text>
 
         {/* Central Brain Hologram Network */}
-        <g transform="translate(230, 142)">
-          {/* Radial back glow */}
-          <circle cx="0" cy="0" r="54" fill="url(#brainGlow)" opacity="0.8" />
+        <g transform="translate(260, 146)">
+          <circle cx="0" cy="0" r="54" fill="url(#brainGlowWork)" opacity="0.8" />
           
-          {/* Synaptic nodes & links */}
           <path d="M-45 -18 Q-20 -45 0 -38 Q20 -45 45 -18 Q55 12 35 38 Q0 48 -35 38 Z" stroke="#38bdf8" strokeWidth="1.5" fill="rgba(6,182,212,0.12)" />
           <path d="M-28 -28 Q0 -10 28 -28" stroke="#818cf8" strokeWidth="1.2" strokeDasharray="3 3"/>
           <path d="M-36 12 Q0 26 36 12" stroke="#818cf8" strokeWidth="1.2" strokeDasharray="3 3"/>
-          <path d="M0 -38 V40" stroke="#a855f7" strokeWidth="1.5"/>
+          <path d="M0 -38 V40" stroke="#38bdf8" strokeWidth="1.5"/>
           <path d="M-22 -8 Q0 6 22 -8" stroke="#38bdf8" strokeWidth="1.5"/>
 
-          {/* Glowing node vertices */}
           <circle cx="-35" cy="-20" r="3.5" fill="#38bdf8" />
           <circle cx="35" cy="-20" r="3.5" fill="#38bdf8" />
           <circle cx="-25" cy="18" r="3.5" fill="#60a5fa" />
@@ -55,26 +50,26 @@ const PROJECTS = [
           <circle cx="0" cy="0" r="4.5" fill="#ffffff" />
         </g>
 
-        {/* Floating Callout Badges */}
-        <g transform="translate(68, 92)">
+        {/* Floating Badges */}
+        <g transform="translate(68, 98)">
           <rect width="84" height="26" rx="13" fill="rgba(15,23,42,0.9)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
           <text x="42" y="17" textAnchor="middle" fill="#e0f2fe" fontSize="10" fontWeight="600" fontFamily="sans-serif">Reasoning</text>
         </g>
-        <g transform="translate(308, 92)">
+        <g transform="translate(368, 98)">
           <rect width="84" height="26" rx="13" fill="rgba(15,23,42,0.9)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
           <text x="42" y="17" textAnchor="middle" fill="#e0f2fe" fontSize="10" fontWeight="600" fontFamily="sans-serif">Vision</text>
         </g>
-        <g transform="translate(80, 160)">
-          <rect width="72" height="24" rx="12" fill="rgba(15,23,42,0.9)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
-          <text x="36" y="16" textAnchor="middle" fill="#e0f2fe" fontSize="10" fontWeight="600" fontFamily="sans-serif">Fast Search</text>
+        <g transform="translate(76, 176)">
+          <rect width="78" height="24" rx="12" fill="rgba(15,23,42,0.9)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
+          <text x="39" y="16" textAnchor="middle" fill="#e0f2fe" fontSize="10" fontWeight="600" fontFamily="sans-serif">Fast Search</text>
         </g>
-        <g transform="translate(308, 160)">
-          <rect width="72" height="24" rx="12" fill="rgba(15,23,42,0.9)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
-          <text x="36" y="16" textAnchor="middle" fill="#e0f2fe" fontSize="10" fontWeight="600" fontFamily="sans-serif">Coding</text>
+        <g transform="translate(368, 176)">
+          <rect width="78" height="24" rx="12" fill="rgba(15,23,42,0.9)" stroke="rgba(56,189,248,0.4)" strokeWidth="1"/>
+          <text x="39" y="16" textAnchor="middle" fill="#e0f2fe" fontSize="10" fontWeight="600" fontFamily="sans-serif">Coding</text>
         </g>
 
         <defs>
-          <radialGradient id="brainGlow" cx="50%" cy="50%" r="50%">
+          <radialGradient id="brainGlowWork" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.6"/>
             <stop offset="100%" stopColor="#080f1e" stopOpacity="0"/>
           </radialGradient>
@@ -98,46 +93,42 @@ const PROJECTS = [
     liveUrl: 'https://github.com',
     githubUrl: 'https://github.com',
     visual: (
-      <svg viewBox="0 0 460 230" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="460" height="230" fill="#070c18" />
-        <text x="230" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">VoteChain</text>
-        <text x="230" y="56" textAnchor="middle" fill="#60a5fa" fontSize="10.5" fontFamily="monospace" letterSpacing="1">BLOCKCHAIN-POWERED SMART ELECTION SYSTEM</text>
+      <svg viewBox="0 0 520 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="520" height="250" fill="#070c18" />
+        <path d="M0 50h520M0 100h520M0 150h520M0 200h520" stroke="rgba(59,130,246,0.06)" strokeWidth="1"/>
+        <path d="M65 0v250M130 0v250M195 0v250M260 0v250M325 0v250M390 0v250M455 0v250" stroke="rgba(59,130,246,0.06)" strokeWidth="1"/>
 
-        {/* Central Isometric Vault & Cryptographic Chain */}
-        <g transform="translate(230, 138)">
-          {/* Back Glowing Aura */}
-          <circle cx="0" cy="0" r="58" fill="url(#chainGlow)" opacity="0.7" />
+        <text x="260" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">VoteChain</text>
+        <text x="260" y="56" textAnchor="middle" fill="#60a5fa" fontSize="10.5" fontFamily="monospace" letterSpacing="1">BLOCKCHAIN-POWERED SMART ELECTION SYSTEM</text>
 
-          {/* Hexagonal Chain Links */}
+        <g transform="translate(260, 146)">
+          <circle cx="0" cy="0" r="58" fill="url(#chainGlowWork)" opacity="0.7" />
           <polygon points="0,-48 42,-24 42,24 0,48 -42,24 -42,-24" stroke="#3b82f6" strokeWidth="2" fill="none" strokeDasharray="6 4"/>
           <polygon points="0,-36 32,-18 32,18 0,36 -32,18 -32,-18" stroke="#60a5fa" strokeWidth="1.5" fill="rgba(37,99,235,0.1)"/>
-
-          {/* Center Ballot Box Icon */}
           <rect x="-18" y="-18" width="36" height="36" rx="6" fill="#1e293b" stroke="#93c5fd" strokeWidth="1.5" />
           <path d="M-8 -6 L0 2 L10 -8" stroke="#38bdf8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
           <rect x="-10" y="6" width="20" height="2" fill="#64748b" rx="1"/>
         </g>
 
-        {/* Callout Badges */}
-        <g transform="translate(64, 88)">
+        <g transform="translate(68, 98)">
           <rect width="88" height="24" rx="12" fill="rgba(15,23,42,0.9)" stroke="rgba(96,165,250,0.35)" strokeWidth="1"/>
           <text x="44" y="16" textAnchor="middle" fill="#bfdbfe" fontSize="10" fontWeight="600" fontFamily="sans-serif">Tamper-Proof</text>
         </g>
-        <g transform="translate(308, 88)">
+        <g transform="translate(364, 98)">
           <rect width="88" height="24" rx="12" fill="rgba(15,23,42,0.9)" stroke="rgba(96,165,250,0.35)" strokeWidth="1"/>
           <text x="44" y="16" textAnchor="middle" fill="#bfdbfe" fontSize="10" fontWeight="600" fontFamily="sans-serif">Live Results</text>
         </g>
-        <g transform="translate(74, 168)">
+        <g transform="translate(74, 176)">
           <rect width="86" height="24" rx="12" fill="rgba(15,23,42,0.9)" stroke="rgba(96,165,250,0.35)" strokeWidth="1"/>
           <text x="43" y="16" textAnchor="middle" fill="#bfdbfe" fontSize="10" fontWeight="600" fontFamily="sans-serif">Postal Voting</text>
         </g>
-        <g transform="translate(304, 168)">
+        <g transform="translate(360, 176)">
           <rect width="90" height="24" rx="12" fill="rgba(15,23,42,0.9)" stroke="rgba(96,165,250,0.35)" strokeWidth="1"/>
           <text x="45" y="16" textAnchor="middle" fill="#bfdbfe" fontSize="10" fontWeight="600" fontFamily="sans-serif">Verified Votes</text>
         </g>
 
         <defs>
-          <radialGradient id="chainGlow" cx="50%" cy="50%" r="50%">
+          <radialGradient id="chainGlowWork" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#2563eb" stopOpacity="0.5"/>
             <stop offset="100%" stopColor="#070c18" stopOpacity="0"/>
           </radialGradient>
@@ -161,39 +152,34 @@ const PROJECTS = [
     liveUrl: 'https://github.com',
     githubUrl: 'https://github.com',
     visual: (
-      <svg viewBox="0 0 460 230" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="460" height="230" fill="#06101c" />
-        <text x="230" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">Flood Spaces 2.0</text>
-        <text x="230" y="56" textAnchor="middle" fill="#2dd4bf" fontSize="10.5" fontFamily="monospace" letterSpacing="1">AI-POWERED FLOOD PREDICTION & RADAR MAPPING</text>
+      <svg viewBox="0 0 520 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="520" height="250" fill="#06101c" />
+        <path d="M0 50h520M0 100h520M0 150h520M0 200h520" stroke="rgba(45,212,191,0.06)" strokeWidth="1"/>
+        <path d="M65 0v250M130 0v250M195 0v250M260 0v250M325 0v250M390 0v250M455 0v250" stroke="rgba(45,212,191,0.06)" strokeWidth="1"/>
 
-        {/* Geospatial Radar Scanner */}
-        <g transform="translate(180, 140)">
-          {/* Radar concentric rings */}
-          <circle cx="0" cy="0" r="60" stroke="rgba(45,212,191,0.2)" strokeWidth="1" fill="none" />
-          <circle cx="0" cy="0" r="42" stroke="rgba(45,212,191,0.3)" strokeWidth="1" fill="none" />
+        <text x="260" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">Flood Spaces 2.0</text>
+        <text x="260" y="56" textAnchor="middle" fill="#2dd4bf" fontSize="10.5" fontFamily="monospace" letterSpacing="1">AI-POWERED FLOOD PREDICTION & RADAR MAPPING</text>
+
+        <g transform="translate(200, 146)">
+          <circle cx="0" cy="0" r="58" stroke="rgba(45,212,191,0.2)" strokeWidth="1" fill="none" />
+          <circle cx="0" cy="0" r="40" stroke="rgba(45,212,191,0.3)" strokeWidth="1" fill="none" />
           <circle cx="0" cy="0" r="22" stroke="rgba(45,212,191,0.45)" strokeWidth="1" fill="none" />
-          <line x1="-65" y1="0" x2="65" y2="0" stroke="rgba(45,212,191,0.25)" strokeWidth="1" />
-          <line x1="0" y1="-65" x2="0" y2="65" stroke="rgba(45,212,191,0.25)" strokeWidth="1" />
+          <line x1="-62" y1="0" x2="62" y2="0" stroke="rgba(45,212,191,0.25)" strokeWidth="1" />
+          <line x1="0" y1="-62" x2="0" y2="62" stroke="rgba(45,212,191,0.25)" strokeWidth="1" />
 
-          {/* Radar Sweep cone */}
-          <path d="M0 0 L46 -38 A60 60 0 0 1 60 0 Z" fill="url(#radarSweep)" opacity="0.5" />
-
-          {/* Water level contour nodes */}
+          <path d="M0 0 L44 -38 A58 58 0 0 1 58 0 Z" fill="url(#radarSweepWork)" opacity="0.5" />
           <circle cx="28" cy="-14" r="5" fill="#f43f5e" opacity="0.9"/>
           <circle cx="12" cy="22" r="4" fill="#fbbf24" opacity="0.9"/>
           <circle cx="-24" cy="-20" r="4" fill="#38bdf8" opacity="0.9"/>
         </g>
 
-        {/* Telemetry Gauge & Bar chart on Right */}
-        <g transform="translate(320, 100)">
-          {/* Telemetry Bar Chart */}
+        <g transform="translate(360, 106)">
           <rect x="0" y="24" width="7" height="30" fill="#2dd4bf" rx="2" />
           <rect x="12" y="14" width="7" height="40" fill="#2dd4bf" rx="2" />
           <rect x="24" y="32" width="7" height="22" fill="#2dd4bf" rx="2" />
           <rect x="36" y="8" width="7" height="46" fill="#38bdf8" rx="2" />
           <rect x="48" y="18" width="7" height="36" fill="#38bdf8" rx="2" />
 
-          {/* Accuracy Gauge Dial */}
           <g transform="translate(30, 80)">
             <circle cx="0" cy="0" r="22" fill="#0f172a" stroke="#2dd4bf" strokeWidth="2"/>
             <text x="0" y="2" textAnchor="middle" fill="#67e8f9" fontSize="9" fontWeight="700" fontFamily="sans-serif">94.2%</text>
@@ -202,7 +188,7 @@ const PROJECTS = [
         </g>
 
         <defs>
-          <linearGradient id="radarSweep" x1="0" y1="0" x2="60" y2="-38" gradientUnits="userSpaceOnUse">
+          <linearGradient id="radarSweepWork" x1="0" y1="0" x2="60" y2="-38" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#2dd4bf" stopOpacity="0"/>
             <stop offset="100%" stopColor="#2dd4bf" stopOpacity="0.8"/>
           </linearGradient>
@@ -226,17 +212,17 @@ const PROJECTS = [
     liveUrl: 'https://github.com',
     githubUrl: 'https://github.com',
     visual: (
-      <svg viewBox="0 0 460 230" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="460" height="230" fill="#080d19" />
-        <text x="230" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">DevPulse Cloud</text>
-        <text x="230" y="56" textAnchor="middle" fill="#38bdf8" fontSize="10.5" fontFamily="monospace" letterSpacing="1">CONTAINER ORCHESTRATION & CLUSTER TELEMETRY</text>
+      <svg viewBox="0 0 520 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="520" height="250" fill="#080d19" />
+        <path d="M0 50h520M0 100h520M0 150h520M0 200h520" stroke="rgba(56,189,248,0.06)" strokeWidth="1"/>
+        <path d="M65 0v250M130 0v250M195 0v250M260 0v250M325 0v250M390 0v250M455 0v250" stroke="rgba(56,189,248,0.06)" strokeWidth="1"/>
 
-        {/* Kubernetes Pod Mesh */}
-        <g transform="translate(230, 140)">
-          {/* Central Pod Cluster */}
-          <circle cx="0" cy="0" r="54" fill="url(#cloudGlow)" opacity="0.6"/>
+        <text x="260" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">DevPulse Cloud</text>
+        <text x="260" y="56" textAnchor="middle" fill="#38bdf8" fontSize="10.5" fontFamily="monospace" letterSpacing="1">CONTAINER ORCHESTRATION & CLUSTER TELEMETRY</text>
+
+        <g transform="translate(260, 146)">
+          <circle cx="0" cy="0" r="54" fill="url(#cloudGlowWork)" opacity="0.6"/>
           
-          {/* Interconnected Pods */}
           <line x1="-70" y1="-25" x2="0" y2="-40" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="3 3"/>
           <line x1="70" y1="-25" x2="0" y2="-40" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="3 3"/>
           <line x1="-70" y1="-25" x2="-40" y2="28" stroke="#38bdf8" strokeWidth="1.5"/>
@@ -244,7 +230,6 @@ const PROJECTS = [
           <line x1="-40" y1="28" x2="40" y2="28" stroke="#38bdf8" strokeWidth="1.5"/>
           <line x1="0" y1="-40" x2="0" y2="10" stroke="#38bdf8" strokeWidth="1.5"/>
 
-          {/* Pod Nodes */}
           <rect x="-18" y="-52" width="36" height="24" rx="6" fill="#1e293b" stroke="#38bdf8" strokeWidth="1.5"/>
           <text x="0" y="-36" textAnchor="middle" fill="#38bdf8" fontSize="9" fontWeight="700">Cluster</text>
 
@@ -262,7 +247,7 @@ const PROJECTS = [
         </g>
 
         <defs>
-          <radialGradient id="cloudGlow" cx="50%" cy="50%" r="50%">
+          <radialGradient id="cloudGlowWork" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.45"/>
             <stop offset="100%" stopColor="#080d19" stopOpacity="0"/>
           </radialGradient>
@@ -286,31 +271,30 @@ const PROJECTS = [
     liveUrl: 'https://github.com',
     githubUrl: 'https://github.com',
     visual: (
-      <svg viewBox="0 0 460 230" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="460" height="230" fill="#090f19" />
-        <text x="230" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">ShopSphere Pro</text>
-        <text x="230" y="56" textAnchor="middle" fill="#a3e635" fontSize="10.5" fontFamily="monospace" letterSpacing="1">HEADLESS SHOPIFY & HIGH-SPEED COMMERCE</text>
+      <svg viewBox="0 0 520 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="520" height="250" fill="#090f19" />
+        <path d="M0 50h520M0 100h520M0 150h520M0 200h520" stroke="rgba(163,230,53,0.06)" strokeWidth="1"/>
+        <path d="M65 0v250M130 0v250M195 0v250M260 0v250M325 0v250M390 0v250M455 0v250" stroke="rgba(163,230,53,0.06)" strokeWidth="1"/>
 
-        {/* Headless Showcase Deck */}
-        <g transform="translate(230, 138)">
+        <text x="260" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">ShopSphere Pro</text>
+        <text x="260" y="56" textAnchor="middle" fill="#a3e635" fontSize="10.5" fontFamily="monospace" letterSpacing="1">HEADLESS SHOPIFY & HIGH-SPEED COMMERCE</text>
+
+        <g transform="translate(260, 146)">
           <rect x="-140" y="-50" width="280" height="95" rx="10" fill="#111827" stroke="rgba(163,230,53,0.3)" strokeWidth="1.2"/>
-          {/* Product thumbnail mock */}
           <rect x="-124" y="-36" width="68" height="68" rx="8" fill="#1f2937" stroke="#374151" />
-          <circle cx="-90" cy="-2" r="20" fill="url(#storeGlow)" />
+          <circle cx="-90" cy="-2" r="20" fill="url(#storeGlowWork)" />
           <path d="M-102 6 L-84 -18 L-74 6 Z" stroke="#a3e635" strokeWidth="2" fill="none"/>
 
-          {/* Product info lines */}
           <rect x="-42" y="-30" width="105" height="10" rx="5" fill="#e5e7eb" />
           <rect x="-42" y="-12" width="70" height="8" rx="4" fill="#9ca3af" />
           <text x="-42" y="18" fill="#a3e635" fontSize="14" fontWeight="800" fontFamily="sans-serif">$249.00</text>
 
-          {/* Checkout CTA pill */}
           <rect x="52" y="2" width="76" height="24" rx="12" fill="#a3e635" />
           <text x="90" y="17" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="700" fontFamily="sans-serif">Checkout</text>
         </g>
 
         <defs>
-          <radialGradient id="storeGlow" cx="50%" cy="50%" r="50%">
+          <radialGradient id="storeGlowWork" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#a3e635" stopOpacity="0.5"/>
             <stop offset="100%" stopColor="#1f2937" stopOpacity="0"/>
           </radialGradient>
@@ -334,31 +318,29 @@ const PROJECTS = [
     liveUrl: 'https://github.com',
     githubUrl: 'https://github.com',
     visual: (
-      <svg viewBox="0 0 460 230" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="460" height="230" fill="#080c16" />
-        <text x="230" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">MetaPulse CRM</text>
-        <text x="230" y="56" textAnchor="middle" fill="#f43f5e" fontSize="10.5" fontFamily="monospace" letterSpacing="1">OMNICHANNEL META & TWILIO SMS PIPELINE</text>
+      <svg viewBox="0 0 520 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="520" height="250" fill="#080c16" />
+        <path d="M0 50h520M0 100h520M0 150h520M0 200h520" stroke="rgba(244,63,94,0.06)" strokeWidth="1"/>
+        <path d="M65 0v250M130 0v250M195 0v250M260 0v250M325 0v250M390 0v250M455 0v250" stroke="rgba(244,63,94,0.06)" strokeWidth="1"/>
 
-        {/* Messaging Flow Pipeline */}
-        <g transform="translate(230, 138)">
-          {/* Connector Pipes */}
+        <text x="260" y="38" textAnchor="middle" fill="#ffffff" fontSize="22" fontWeight="800" fontFamily="sans-serif">MetaPulse CRM</text>
+        <text x="260" y="56" textAnchor="middle" fill="#f43f5e" fontSize="10.5" fontFamily="monospace" letterSpacing="1">OMNICHANNEL META & TWILIO SMS PIPELINE</text>
+
+        <g transform="translate(260, 146)">
           <line x1="-120" y1="0" x2="-40" y2="0" stroke="#f43f5e" strokeWidth="2" strokeDasharray="4 4"/>
           <line x1="40" y1="0" x2="120" y2="0" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4 4"/>
 
-          {/* Left Node: Meta API */}
           <g transform="translate(-120, 0)">
             <circle cx="0" cy="0" r="26" fill="#1e293b" stroke="#0081fb" strokeWidth="2"/>
             <text x="0" y="4" textAnchor="middle" fill="#0081fb" fontSize="9" fontWeight="700">Meta API</text>
           </g>
 
-          {/* Center Hub: Event Router */}
           <g transform="translate(0, 0)">
             <rect x="-38" y="-24" width="76" height="48" rx="10" fill="#0f172a" stroke="#f43f5e" strokeWidth="2"/>
             <text x="0" y="-3" textAnchor="middle" fill="#ffffff" fontSize="10" fontWeight="700">Webhook</text>
             <text x="0" y="11" textAnchor="middle" fill="#f43f5e" fontSize="8" fontWeight="600">Engine</text>
           </g>
 
-          {/* Right Node: Twilio SMS & FCM */}
           <g transform="translate(120, 0)">
             <circle cx="0" cy="0" r="26" fill="#1e293b" stroke="#f43f5e" strokeWidth="2"/>
             <text x="0" y="4" textAnchor="middle" fill="#f43f5e" fontSize="9" fontWeight="700">Twilio SMS</text>
@@ -371,157 +353,175 @@ const PROJECTS = [
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const cardRefs = useRef([]);
+  const [activeStackIndex, setActiveStackIndex] = useState(1);
 
-  const wrapperRef = useRef(null);
-  const trackRef = useRef(null);
-
-  // Synchronize vertical window scroll with horizontal track translateX
+  // Smooth Stacking Parallax: scale down and dim earlier cards as newer cards stack over them
   useEffect(() => {
+    let animFrame = null;
+
     const handleScroll = () => {
-      const wrapper = wrapperRef.current;
-      const track = trackRef.current;
-      if (!wrapper || !track) return;
+      if (window.innerWidth <= 900) return;
 
-      const rect = wrapper.getBoundingClientRect();
-      const totalScrollable = wrapper.offsetHeight - window.innerHeight;
+      const totalCards = PROJECTS.length;
+      let topVisibleIndex = 1;
 
-      if (totalScrollable <= 0) return;
+      for (let i = 0; i < totalCards; i++) {
+        const currentCard = cardRefs.current[i];
+        const nextCard = cardRefs.current[i + 1];
 
-      // Calculate how far into the section we have scrolled (0 to 1)
-      const scrolled = -rect.top;
-      const progress = Math.min(1, Math.max(0, scrolled / totalScrollable));
-      setScrollProgress(progress);
+        if (!currentCard) continue;
 
-      // Max horizontal translation in pixels
-      const maxTranslate = track.scrollWidth - window.innerWidth;
-      if (maxTranslate > 0) {
-        track.style.transform = `translateX(-${progress * maxTranslate}px)`;
+        if (nextCard) {
+          const nextRect = nextCard.getBoundingClientRect();
+          const targetTop = 115 + (i + 1) * 28;
+
+          const distanceToStick = nextRect.top - targetTop;
+          const overlapFactor = Math.max(0, Math.min(1, 1 - distanceToStick / 320));
+
+          const scale = 1 - overlapFactor * 0.055;
+          const brightness = 1 - overlapFactor * 0.35;
+          const translateY = overlapFactor * -12;
+
+          currentCard.style.transform = `scale(${scale.toFixed(4)}) translateY(${translateY.toFixed(2)}px)`;
+          currentCard.style.filter = `brightness(${brightness.toFixed(3)})`;
+          currentCard.style.opacity = `${(1 - overlapFactor * 0.12).toFixed(3)}`;
+
+          if (distanceToStick <= 20) {
+            topVisibleIndex = i + 2;
+          }
+        } else {
+          currentCard.style.transform = 'scale(1) translateY(0px)';
+          currentCard.style.filter = 'brightness(1)';
+          currentCard.style.opacity = '1';
+        }
       }
+
+      setActiveStackIndex(Math.min(totalCards, topVisibleIndex));
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
+    const onScroll = () => {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      animFrame = requestAnimationFrame(handleScroll);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
     handleScroll();
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (animFrame) cancelAnimationFrame(animFrame);
     };
   }, []);
 
+  // 3D Card Perspective Tilt and Cursor Spotlight
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const tiltX = ((y - centerY) / centerY) * -3.5;
+    const tiltY = ((x - centerX) / centerX) * 3.5;
+
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+    card.style.setProperty('--card-tilt-x', `${tiltX.toFixed(2)}deg`);
+    card.style.setProperty('--card-tilt-y', `${tiltY.toFixed(2)}deg`);
+  };
+
+  const handleMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.setProperty('--card-tilt-x', '0deg');
+    card.style.setProperty('--card-tilt-y', '0deg');
+  };
+
   return (
     <>
-      <section id="projects" ref={wrapperRef} className="work-horizontal-wrapper">
-        <div className="work-sticky-viewport">
-          
-          {/* Left Social Dock (matching reference screenshot) */}
-          <div className="work-left-dock" aria-hidden="true">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="GitHub">
-              <GithubIcon size={18} />
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="LinkedIn">
-              <LinkedinIcon size={18} />
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="X / Twitter">
-              <TwitterIcon size={18} />
-            </a>
+      <section id="projects" className="work-parallax-section">
+        {/* Left Social Dock */}
+        <div className="work-left-dock" aria-hidden="true">
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="GitHub">
+            <GithubIcon size={18} />
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="LinkedIn">
+            <LinkedinIcon size={18} />
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="X / Twitter">
+            <TwitterIcon size={18} />
+          </a>
+        </div>
+
+        {/* Ambient Radial Glows */}
+        <div className="work-stack-glow-1" aria-hidden="true" />
+        <div className="work-stack-glow-2" aria-hidden="true" />
+
+        {/* Header Bar matching "My Work" UI with Live Stack Counter */}
+        <div className="work-header-bar">
+          <div className="work-title-group">
+            <span className="work-glowing-dot" />
+            <h2 className="work-main-title">
+              My <span>Work</span>
+            </h2>
           </div>
 
-          {/* Section Header */}
-          <div className="work-header-bar">
-            <div className="work-title-group">
-              <span className="work-glowing-dot" />
-              <h2 className="work-main-title">
-                My <span>Work</span>
-              </h2>
-            </div>
-
-            <div className="work-hint-badge">
-              <span className="work-hint-arrows">
-                <ArrowLeftRight size={14} />
-              </span>
-              <span>Scroll down to navigate horizontally</span>
-            </div>
+          <div className="work-badge-hint">
+            <span className="work-deck-counter">0{activeStackIndex} / 0{PROJECTS.length}</span>
+            <span>Sticky Parallax Deck · Click to inspect</span>
           </div>
+        </div>
 
-          {/* Horizontal Project Track */}
-          <div className="work-track-wrapper">
-            <div ref={trackRef} className="work-horizontal-track">
-              {PROJECTS.map((project, index) => {
-                // Alternating layout:
-                // Odd cards (0, 2, 4): Text on top, image on bottom
-                // Even cards (1, 3, 5): Image on top, text on bottom
-                const isImageOnTop = index % 2 === 1;
+        {/* Sticky Stacking Deck Wrapper */}
+        <div className="work-stack-deck">
+          {PROJECTS.map((project, index) => (
+            <div
+              key={project.id}
+              className="work-deck-slot"
+              style={{
+                '--stack-idx': index,
+                zIndex: index + 1,
+              }}
+            >
+              <article
+                ref={(el) => (cardRefs.current[index] = el)}
+                className="work-deck-card"
+                onClick={() => setSelectedProject(project)}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+              >
+                {/* Left Content (Title, Badge, Category, Tools, Description, Highlights) */}
+                <div className="work-deck-content">
+                  <div className="work-deck-card-top">
+                    <span className="work-deck-number">{project.number}</span>
+                    <div className="work-deck-meta">
+                      <span className="work-badge-tag">{project.badge}</span>
+                      <h3 className="work-deck-card-title">{project.title}</h3>
+                      <span className="work-deck-category">{project.category}</span>
+                    </div>
+                  </div>
 
-                return (
-                  <article
-                    key={project.id}
-                    className="work-card-column"
-                    onClick={() => setSelectedProject(project)}
-                  >
-                    {isImageOnTop ? (
-                      <>
-                        {/* Image on top */}
-                        <div className="work-card-visual">
-                          {project.visual}
-                        </div>
+                  <h4 className="work-deck-subhead">Tools & Frameworks</h4>
+                  <p className="work-deck-tools">{project.tools}</p>
+                  <p className="work-deck-desc">{project.description}</p>
 
-                        {/* Text on bottom */}
-                        <div className="work-card-info">
-                          <div className="work-card-header">
-                            <span className="work-card-number">{project.number}</span>
-                            <div className="work-card-meta">
-                              <h3 className="work-card-title">{project.title}</h3>
-                              <span className="work-card-category">{project.category}</span>
-                            </div>
-                          </div>
+                  <div className="work-card-cta-row">
+                    <span className="work-cta-hint">
+                      <Layers size={13} /> View Architecture & Live Demo
+                    </span>
+                  </div>
+                </div>
 
-                          <h4 className="work-card-subhead">Tools and features</h4>
-                          <p className="work-card-tools">{project.tools}</p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        {/* Text on top */}
-                        <div className="work-card-info">
-                          <div className="work-card-header">
-                            <span className="work-card-number">{project.number}</span>
-                            <div className="work-card-meta">
-                              <h3 className="work-card-title">{project.title}</h3>
-                              <span className="work-card-category">{project.category}</span>
-                            </div>
-                          </div>
-
-                          <h4 className="work-card-subhead">Tools and features</h4>
-                          <p className="work-card-tools">{project.tools}</p>
-                        </div>
-
-                        {/* Image on bottom */}
-                        <div className="work-card-visual">
-                          {project.visual}
-                        </div>
-                      </>
-                    )}
-                  </article>
-                );
-              })}
+                {/* Right Architectural Vector Visual */}
+                <div className="work-deck-visual">
+                  {project.visual}
+                </div>
+              </article>
             </div>
-          </div>
-
-          {/* Footer Track Progress Bar */}
-          <div className="work-footer-bar">
-            <div className="work-progress-rail">
-              <div
-                className="work-progress-fill"
-                style={{ transform: `scaleX(${Math.max(0.08, scrollProgress)})` }}
-              />
-            </div>
-            <span className="work-count-badge">
-              01 — 0{PROJECTS.length} PROJECTS
-            </span>
-          </div>
-
+          ))}
         </div>
       </section>
 

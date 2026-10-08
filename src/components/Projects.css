@@ -1,40 +1,89 @@
-/* =========================================
-   HORIZONTAL "MY WORK" SCROLL SECTION
-   ========================================= */
+/* ========================================================
+   MY WORK: STICKY STACKING CARDS PARALLAX DECK
+   ======================================================== */
 
-.work-horizontal-wrapper {
+.work-parallax-section {
   position: relative;
+  padding: 120px 0 160px;
   background: #04060e;
-  /* Extra vertical scroll runway so mouse wheel translates cards */
-  height: 380vh;
+  overflow: visible;
 }
 
-.work-sticky-viewport {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
+/* Ambient Radial Glows */
+.work-stack-glow-1 {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 950px;
+  height: 650px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, rgba(6, 182, 212, 0.05) 50%, transparent 70%);
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.work-stack-glow-2 {
+  position: absolute;
+  top: 70%;
+  right: -5%;
+  width: 700px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 65%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Left Social Dock (Sticky desktop sidebar) */
+.work-left-dock {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.12) 0%, transparent 40%),
-              radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
-              #04060e;
-  z-index: 10;
+  gap: 14px;
+  z-index: 40;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 12px 8px;
+  border-radius: 99px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Header */
+.work-dock-link {
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.work-dock-link:hover {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  transform: scale(1.1);
+}
+
+/* Header bar matching "My Work" UI */
 .work-header-bar {
-  padding: 30px 48px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  max-width: 1600px;
-  margin: 0 auto;
-  z-index: 2;
-  flex-shrink: 0;
+  max-width: 1240px;
+  margin: 0 auto 60px;
+  padding: 0 32px;
+  position: relative;
+  z-index: 10;
 }
 
 .work-title-group {
@@ -48,25 +97,14 @@
   height: 22px;
   border-radius: 50%;
   background: #38bdf8;
-  box-shadow: 0 0 24px rgba(56, 189, 248, 0.9), 0 0 45px rgba(37, 99, 235, 0.6);
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.95), 0 0 45px rgba(37, 99, 235, 0.65);
   flex-shrink: 0;
   animation: pulse-dot 2.5s ease-in-out infinite;
 }
 
-@keyframes pulse-dot {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.8), 0 0 40px rgba(37, 99, 235, 0.5);
-  }
-  50% {
-    transform: scale(1.15);
-    box-shadow: 0 0 30px rgba(56, 189, 248, 1), 0 0 60px rgba(37, 99, 235, 0.8);
-  }
-}
-
 .work-main-title {
   font-family: var(--font-display, 'Syne', sans-serif);
-  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
   font-weight: 800;
   color: #ffffff;
   letter-spacing: -0.02em;
@@ -81,299 +119,319 @@
   display: inline-block;
 }
 
-.work-hint-badge {
+.work-badge-hint {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-family: var(--font-code, monospace);
   font-size: 0.82rem;
-  color: var(--text-300, #94a3b8);
-  background: rgba(255, 255, 255, 0.04);
-  padding: 6px 16px;
+  color: #93c5fd;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 8px 20px;
   border-radius: 99px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-.work-hint-arrows {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.work-deck-counter {
   color: #38bdf8;
-  animation: arrow-sway 1.8s ease-in-out infinite alternate;
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
-@keyframes arrow-sway {
-  from { transform: translateX(-3px); }
-  to { transform: translateX(3px); }
-}
-
-/* Horizontal Track Container */
-.work-track-wrapper {
-  position: relative;
-  width: 100%;
-  height: 62vh;
-  min-height: 440px;
-  max-height: 580px;
-  overflow: visible;
+/* ========================================================
+   STACKING DECK CONTAINER & SLOTS
+   ======================================================== */
+.work-stack-deck {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px;
   display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 5;
+}
+
+/* Sticky Slot: Pins each card at an incremental offset */
+.work-deck-slot {
+  position: sticky;
+  top: calc(115px + var(--stack-idx) * 26px);
+  margin-bottom: 90px;
+  transform-origin: center top;
+}
+
+.work-deck-slot:last-child {
+  margin-bottom: 20px;
+}
+
+/* Wide Stackable Card */
+.work-deck-card {
+  position: relative;
+  background: rgba(9, 14, 28, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: 24px;
+  padding: 44px 48px;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 40px;
   align-items: center;
-}
-
-.work-horizontal-track {
-  display: flex;
-  align-items: stretch;
-  height: 100%;
-  will-change: transform;
-  padding-left: 48px;
-  padding-right: 120px;
-}
-
-/* Individual Project Card Column */
-.work-card-column {
-  width: 500px;
-  min-width: 500px;
-  height: 100%;
-  padding: 24px 36px;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  box-shadow: 
+    0 30px 70px -15px rgba(0, 0, 0, 0.85),
+    0 0 45px rgba(37, 99, 235, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  will-change: transform, filter, opacity;
+  transform-origin: center top;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
   cursor: pointer;
-  transition: background 0.3s ease, border-color 0.3s ease;
-  position: relative;
-  flex-shrink: 0;
-  box-sizing: border-box;
 }
 
-.work-card-column:hover {
-  background: rgba(255, 255, 255, 0.015);
-  border-right-color: rgba(56, 189, 248, 0.35);
+/* Top Glow Edge Line */
+.work-deck-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.85), rgba(96, 165, 250, 0.85), transparent);
+  pointer-events: none;
 }
 
-/* Card Information Block (Number, Title, Tools) */
-.work-card-info {
+/* Interactive Cursor Spotlight */
+.work-deck-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(550px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(56, 189, 248, 0.1), transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.work-deck-card:hover {
+  border-color: rgba(56, 189, 248, 0.48);
+  box-shadow: 
+    0 35px 80px -15px rgba(0, 0, 0, 0.9),
+    0 0 55px rgba(56, 189, 248, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.work-deck-card:hover::before {
+  opacity: 1;
+}
+
+/* ========================================================
+   LEFT CONTENT AREA (Number, Title, Tools, Description)
+   ======================================================== */
+.work-deck-content {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 14px;
+  position: relative;
+  z-index: 2;
 }
 
-.work-card-header {
+.work-deck-card-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: 20px;
 }
 
-.work-card-number {
+.work-deck-number {
   font-family: var(--font-display, 'Syne', sans-serif);
-  font-size: clamp(3rem, 4vw, 4.2rem);
+  font-size: clamp(3.4rem, 5vw, 4.8rem);
   font-weight: 800;
-  line-height: 0.95;
+  line-height: 0.9;
   color: #ffffff;
   letter-spacing: -0.04em;
-  text-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+  text-shadow: 0 0 28px rgba(255, 255, 255, 0.2);
 }
 
-.work-card-meta {
+.work-deck-meta {
   text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
 }
 
-.work-card-title {
+.work-badge-tag {
+  display: inline-block;
+  font-family: var(--font-code, monospace);
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 99px;
+  background: rgba(37, 99, 235, 0.18);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  margin-bottom: 4px;
+}
+
+.work-deck-card-title {
   font-family: var(--font-display, 'Syne', sans-serif);
-  font-size: 1.45rem;
+  font-size: 1.65rem;
   font-weight: 700;
   color: #ffffff;
-  margin-bottom: 3px;
+  line-height: 1.2;
+  margin: 0;
   transition: color 0.25s ease;
 }
 
-.work-card-column:hover .work-card-title {
+.work-deck-card:hover .work-deck-card-title {
   color: #38bdf8;
 }
 
-.work-card-category {
+.work-deck-category {
   font-family: var(--font-code, monospace);
-  font-size: 0.8rem;
-  color: var(--text-300, #94a3b8);
-  letter-spacing: 0.04em;
-}
-
-.work-card-subhead {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.96rem;
-  font-weight: 600;
-  color: #e2e8f0;
-  margin-top: 10px;
-  margin-bottom: 2px;
-}
-
-.work-card-tools {
-  font-family: var(--font-body, 'Inter', sans-serif);
   font-size: 0.82rem;
   color: #94a3b8;
-  line-height: 1.55;
+  letter-spacing: 0.03em;
+}
+
+.work-deck-subhead {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.work-deck-tools {
+  font-family: var(--font-code, monospace);
+  font-size: 0.88rem;
+  color: #38bdf8;
+  line-height: 1.5;
   margin: 0;
 }
 
-/* Card Visual Graphic Mockup */
-.work-card-visual {
+.work-deck-desc {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.92rem;
+  color: #94a3b8;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.work-card-cta-row {
+  margin-top: 6px;
+}
+
+.work-cta-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-code, monospace);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #93c5fd;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  padding: 6px 14px;
+  border-radius: 99px;
+  transition: all 0.25s ease;
+}
+
+.work-deck-card:hover .work-cta-hint {
+  color: #ffffff;
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+/* ========================================================
+   RIGHT VECTOR BLUEPRINT VISUAL CONTAINER
+   ======================================================== */
+.work-deck-visual {
   width: 100%;
-  height: 240px;
-  border-radius: 14px;
+  height: 250px;
+  border-radius: 16px;
   overflow: hidden;
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background: #090e1a;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   flex-shrink: 0;
 }
 
-.work-card-column:hover .work-card-visual {
+.work-deck-card:hover .work-deck-visual {
   transform: translateY(-4px) scale(1.02);
-  border-color: rgba(56, 189, 248, 0.5);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(37, 99, 235, 0.35);
+  border-color: rgba(56, 189, 248, 0.55);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(37, 99, 235, 0.35);
 }
 
-.work-card-visual svg {
+.work-deck-visual svg {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-/* Footer / Progress Bar */
-.work-footer-bar {
-  padding: 16px 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1600px;
-  margin: 0 auto;
-  z-index: 2;
-  flex-shrink: 0;
-}
-
-.work-progress-rail {
-  width: 240px;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 99px;
-  overflow: hidden;
-  position: relative;
-}
-
-.work-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #1d4ed8, #3b82f6, #38bdf8);
-  border-radius: 99px;
-  transform-origin: left;
-  transition: transform 0.1s linear;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
-}
-
-.work-count-badge {
-  font-family: var(--font-code, monospace);
-  font-size: 0.82rem;
-  color: var(--text-300, #94a3b8);
-}
-
-/* Left Social Dock (matching screenshot) */
-.work-left-dock {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  z-index: 5;
-}
-
-.work-dock-link {
-  color: rgba(255, 255, 255, 0.4);
-  transition: color 0.2s ease, transform 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.work-dock-link:hover {
-  color: #38bdf8;
-  transform: scale(1.15);
-}
-
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .work-header-bar {
-    padding: 24px 24px 16px;
-  }
-  .work-horizontal-track {
-    padding-left: 24px;
-    padding-right: 60px;
-  }
-  .work-card-column {
-    width: 440px;
-    min-width: 440px;
-    padding: 20px 24px;
-  }
+/* ========================================================
+   RESPONSIVE DESIGN (Tablets & Mobile)
+   ======================================================== */
+@media (max-width: 1200px) {
   .work-left-dock {
     display: none;
   }
 }
 
-@media (max-width: 768px) {
-  .work-horizontal-wrapper {
-    height: auto;
+@media (max-width: 1024px) {
+  .work-deck-card {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 36px 36px;
   }
 
-  .work-sticky-viewport {
-    position: relative;
-    top: auto;
-    height: auto;
-    padding: 60px 0 80px;
+  .work-deck-visual {
+    height: 220px;
+  }
+}
+
+@media (max-width: 900px) {
+  .work-parallax-section {
+    padding: 80px 0 100px;
   }
 
   .work-header-bar {
-    padding: 0 20px 24px;
+    padding: 0 20px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 16px;
+    margin-bottom: 35px;
   }
 
-  .work-track-wrapper {
-    height: auto;
-    max-height: none;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 20px;
+  .work-stack-deck {
+    padding: 0 20px;
+    gap: 30px;
   }
 
-  .work-horizontal-track {
+  .work-deck-slot {
+    position: relative;
+    top: auto !important;
+    margin-bottom: 0;
     transform: none !important;
-    padding-left: 20px;
-    padding-right: 40px;
-    gap: 20px;
   }
 
-  .work-card-column {
-    width: 85vw;
-    min-width: 85vw;
-    max-width: 360px;
-    height: 480px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    scroll-snap-align: center;
+  .work-deck-card {
+    padding: 28px 24px;
+    border-radius: 20px;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
   }
 
-  .work-card-visual {
-    height: 200px;
-  }
-
-  .work-footer-bar {
-    display: none;
+  .work-deck-visual {
+    height: 195px;
   }
 }
