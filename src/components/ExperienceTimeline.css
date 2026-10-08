@@ -53,26 +53,28 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  flex-wrap: nowrap;
 }
 
 .edu-glowing-dot {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: #38bdf8;
-  box-shadow: 0 0 24px rgba(56, 189, 248, 0.95), 0 0 45px rgba(37, 99, 235, 0.65);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.9), 0 0 35px rgba(37, 99, 235, 0.55);
   flex-shrink: 0;
   animation: pulse-dot 2.5s ease-in-out infinite;
 }
 
 .edu-main-title {
   font-family: var(--font-display, 'Syne', sans-serif);
-  font-size: clamp(2.4rem, 5vw, 3.8rem);
-  font-weight: 800;
+  font-size: clamp(1.35rem, 2.8vw, 2.6rem);
+  font-weight: 600;
   color: #ffffff;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   margin: 0;
-  line-height: 1.1;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 .edu-main-title span {
