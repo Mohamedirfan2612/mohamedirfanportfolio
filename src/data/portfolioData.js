@@ -1,6 +1,6 @@
 export const PERSONAL_INFO = {
   name: "Mohamed Irfan",
-  handle: "MohamedIrfan />",
+  handle: "Mohamed Irfan",
   role: "MERN STACK DEVELOPER",
   tagline: "Architecting scalable full-stack web applications, real-time microservices, and high-performance digital experiences.",
   bio: "I am a passionate MERN Stack Developer with deep expertise in designing robust backend systems with Node.js & Express, reactive frontends with React, scalable databases with MongoDB, and cloud infrastructure. I bridge the gap between intuitive UI/UX design and rock-solid server-side performance.",
