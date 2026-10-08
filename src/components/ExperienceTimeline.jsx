@@ -165,7 +165,10 @@ export default function ExperienceTimeline() {
     let animFrame = null;
 
     const handleScroll = () => {
-      if (window.innerWidth <= 900) return;
+      const isMobile = window.innerWidth <= 900;
+      const baseTop = isMobile ? 75 : 115;
+      const stepTop = isMobile ? 18 : 28;
+      const triggerDist = isMobile ? 220 : 320;
 
       const currentCard = cardRefs.current[0];
       const nextCard = cardRefs.current[1];
@@ -173,15 +176,15 @@ export default function ExperienceTimeline() {
       if (!currentCard || !nextCard) return;
 
       const nextRect = nextCard.getBoundingClientRect();
-      const targetTop = 130 + 32;
+      const targetTop = baseTop + stepTop;
 
       // Distance remaining until nextCard sticks over currentCard
       const distanceToStick = nextRect.top - targetTop;
-      const overlapFactor = Math.max(0, Math.min(1, 1 - distanceToStick / 320));
+      const overlapFactor = Math.max(0, Math.min(1, 1 - distanceToStick / triggerDist));
 
-      const scale = 1 - overlapFactor * 0.055;
-      const brightness = 1 - overlapFactor * 0.35;
-      const translateY = overlapFactor * -12;
+      const scale = 1 - overlapFactor * (isMobile ? 0.045 : 0.055);
+      const brightness = 1 - overlapFactor * (isMobile ? 0.28 : 0.35);
+      const translateY = overlapFactor * (isMobile ? -8 : -12);
 
       currentCard.style.transform = `scale(${scale.toFixed(4)}) translateY(${translateY.toFixed(2)}px)`;
       currentCard.style.filter = `brightness(${brightness.toFixed(3)})`;

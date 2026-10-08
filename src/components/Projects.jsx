@@ -361,7 +361,10 @@ export default function Projects() {
     let animFrame = null;
 
     const handleScroll = () => {
-      if (window.innerWidth <= 900) return;
+      const isMobile = window.innerWidth <= 900;
+      const baseTop = isMobile ? 75 : 115;
+      const stepTop = isMobile ? 18 : 28;
+      const triggerDist = isMobile ? 220 : 320;
 
       const totalCards = PROJECTS.length;
       let topVisibleIndex = 1;
@@ -374,14 +377,14 @@ export default function Projects() {
 
         if (nextCard) {
           const nextRect = nextCard.getBoundingClientRect();
-          const targetTop = 115 + (i + 1) * 28;
+          const targetTop = baseTop + (i + 1) * stepTop;
 
           const distanceToStick = nextRect.top - targetTop;
-          const overlapFactor = Math.max(0, Math.min(1, 1 - distanceToStick / 320));
+          const overlapFactor = Math.max(0, Math.min(1, 1 - distanceToStick / triggerDist));
 
-          const scale = 1 - overlapFactor * 0.055;
-          const brightness = 1 - overlapFactor * 0.35;
-          const translateY = overlapFactor * -12;
+          const scale = 1 - overlapFactor * (isMobile ? 0.045 : 0.055);
+          const brightness = 1 - overlapFactor * (isMobile ? 0.28 : 0.35);
+          const translateY = overlapFactor * (isMobile ? -8 : -12);
 
           currentCard.style.transform = `scale(${scale.toFixed(4)}) translateY(${translateY.toFixed(2)}px)`;
           currentCard.style.filter = `brightness(${brightness.toFixed(3)})`;
