@@ -46,11 +46,18 @@ export default function TerminalPlayground() {
     { type: 'system', text: `Mohamed Irfan CLI  v1.0.0  ·  Node ${navigator.userAgent.includes('Chrome') ? 'Chrome' : 'Browser'}` },
     { type: 'muted', text: 'Type "help" to see all available commands.' },
   ]);
-  const endRef = useRef(null);
+  const outputRef = useRef(null);
   const inputRef = useRef(null);
+  const isInitial = useRef(true);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (isInitial.current) {
+      isInitial.current = false;
+      return;
+    }
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight;
+    }
   }, [history]);
 
   const run = (e) => {
@@ -115,10 +122,13 @@ export default function TerminalPlayground() {
             </div>
 
             {/* Output area */}
-            <div style={{
-              padding: '20px', minHeight: '260px', maxHeight: '380px', overflowY: 'auto',
-              fontFamily: 'var(--font-code)', fontSize: '0.86rem', lineHeight: 1.65
-            }}>
+            <div
+              ref={outputRef}
+              style={{
+                padding: '20px', minHeight: '260px', maxHeight: '380px', overflowY: 'auto',
+                fontFamily: 'var(--font-code)', fontSize: '0.86rem', lineHeight: 1.65
+              }}
+            >
               {history.map((line, i) => (
                 <div key={i} style={{
                   marginBottom: '6px',
@@ -132,7 +142,6 @@ export default function TerminalPlayground() {
                   {line.text}
                 </div>
               ))}
-              <div ref={endRef} />
             </div>
 
             {/* Input row */}

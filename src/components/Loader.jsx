@@ -67,9 +67,11 @@ export default function Loader({ ready = true, minDuration = 3200, onDone }) {
 
       if (p >= 99.9) {
         setProgress(100);
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
         setLeaving(true);
         timer = setTimeout(() => {
           setGone(true);
+          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
           onDone && onDone();
         }, 900);
         return;
