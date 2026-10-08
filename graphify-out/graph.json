@@ -343,7 +343,7 @@
       "label": "HERO_GAZE_KEYS",
       "file_type": "code",
       "source_file": "src/components/Hero.jsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast"
     },
     {
@@ -351,7 +351,7 @@
       "label": "Hero()",
       "file_type": "code",
       "source_file": "src/components/Hero.jsx",
-      "source_location": "L18",
+      "source_location": "L19",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1509,7 +1509,7 @@
     },
     {
       "source": "src_components_hero",
-      "target": "ref_lucide_react",
+      "target": "src_photo_portfoliomob",
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -1520,11 +1520,22 @@
     },
     {
       "source": "src_components_hero",
+      "target": "ref_lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/Hero.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_hero",
       "target": "src_components_hero_hero_gaze_keys",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/Hero.jsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -1534,7 +1545,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/Hero.jsx",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast"
     },

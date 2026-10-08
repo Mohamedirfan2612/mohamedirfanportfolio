@@ -3,6 +3,7 @@ import { PERSONAL_INFO } from '../data/portfolioData';
 import HeroThreeCanvas from './HeroThreeCanvas';
 import CursorVideoPortrait from './CursorVideoPortrait';
 import heroVideo from '../videos/portfoliovideo.mp4';
+import mobilePortrait from '../photo/portfoliomob.png';
 import { ArrowRight, Terminal, Mail, Download, MapPin } from 'lucide-react';
 
 // The source video contains real gaze poses at different points in time.
@@ -45,6 +46,7 @@ export default function Hero() {
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <CursorVideoPortrait
               src={heroVideo}
+              mobileImage={mobilePortrait}
               width={280}
               height={460}
               keys={HERO_GAZE_KEYS}

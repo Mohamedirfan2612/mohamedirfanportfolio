@@ -22,6 +22,7 @@ import "./CursorVideoPortrait.css";
 export default function CursorVideoPortrait({
   src,
   poster,
+  mobileImage,
   start = 0,
   end = 0,
   centerAt = 0.5,
@@ -51,6 +52,7 @@ export default function CursorVideoPortrait({
     if (!card || !video || !canvas) return;
     const ctx = canvas.getContext("2d");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mobilePlayback = window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
 
     const range = { a: start, b: end };
     let cur = { x: 0, y: 0 };
@@ -59,6 +61,7 @@ export default function CursorVideoPortrait({
     let seekInFlight = false;
     let raf = 0;
     let ready = false;
+    let frameReady = false;
 
     const draw = () => {
       if (video.readyState < 2) return;
@@ -71,11 +74,19 @@ export default function CursorVideoPortrait({
       ctx.drawImage(video, (cw - vw * s) / 2, (ch - vh * s) / 2, vw * s, vh * s);
     };
 
+    // Mobile browsers can fire loadedmetadata before the first decoded frame
+    // exists. Always repaint when decoding actually becomes available.
+    const onFrameReady = () => {
+      if (video.readyState < 2) return;
+      frameReady = true;
+      draw();
+    };
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = width * dpr;
       canvas.height = height * dpr;
-      draw();
+      if (frameReady) draw();
     };
 
     const dz = (n) => {
@@ -115,6 +126,7 @@ export default function CursorVideoPortrait({
 
     const onMove = (e) => setFromPoint(e.clientX, e.clientY);
     const onTouch = (e) => { const t = e.touches[0]; if (t) setFromPoint(t.clientX, t.clientY); };
+    const onTouchStart = (e) => { const t = e.touches[0]; if (t) setFromPoint(t.clientX, t.clientY); };
     const onLeave = () => { tgt.x = 0; tgt.y = 0; };
 
     const tick = () => {
@@ -143,37 +155,65 @@ export default function CursorVideoPortrait({
       if (ready) return;
       if (!range.b || range.b > video.duration) range.b = video.duration;
       ready = true;
-      video.pause();
       setDur(video.duration);
+
+      // Phones do not have a desktop cursor to track. Let the native muted
+      // Keep mobile on one decoded center frame. The native video stays
+      // visible underneath as a fallback while the canvas paints the frame.
+      if (mobilePlayback) {
+        video.autoplay = false;
+        video.loop = false;
+        video.muted = true;
+        video.playsInline = true;
+        video.pause();
+        video.currentTime = timeFor(0, 0);
+        resize();
+        if (video.readyState >= 2) onFrameReady();
+        return;
+      }
+
+      video.pause();
       video.currentTime = timeFor(0, 0);
       resize();
     };
     const onSeeked = () => {
       seekInFlight = false;
-      draw();
+      onFrameReady();
       setTime(video.currentTime);
     };
     const onError = () => card.classList.add("cvp--fallback");
 
     video.addEventListener("loadedmetadata", onMeta);
+    video.addEventListener("loadeddata", onFrameReady);
+    video.addEventListener("canplay", onFrameReady);
+    video.addEventListener("canplaythrough", onFrameReady);
     video.addEventListener("seeked", onSeeked);
     video.addEventListener("error", onError);
     if (video.readyState >= 1) onMeta();
     resize();
 
-    if (!reduced) {
+    if (!reduced && !mobilePlayback) {
       window.addEventListener("mousemove", onMove, { passive: true });
+      window.addEventListener("touchstart", onTouchStart, { passive: true });
       window.addEventListener("touchmove", onTouch, { passive: true });
       document.addEventListener("mouseleave", onLeave);
       raf = requestAnimationFrame(tick);
     }
+    window.addEventListener("resize", resize, { passive: true });
+    window.addEventListener("orientationchange", resize, { passive: true });
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouch);
       document.removeEventListener("mouseleave", onLeave);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("orientationchange", resize);
       video.removeEventListener("loadedmetadata", onMeta);
+      video.removeEventListener("loadeddata", onFrameReady);
+      video.removeEventListener("canplay", onFrameReady);
+      video.removeEventListener("canplaythrough", onFrameReady);
       video.removeEventListener("seeked", onSeeked);
       video.removeEventListener("error", onError);
     };
@@ -184,8 +224,9 @@ export default function CursorVideoPortrait({
 
   return (
     <div className="cvp-wrap">
-      <div ref={cardRef} className="cvp" style={{ width, height }}>
+      <div ref={cardRef} className={`cvp${mobileImage ? " cvp--mobile-image" : ""}`} style={{ width, height }}>
         {poster && <img className="cvp__poster" src={poster} alt="" />}
+        {mobileImage && <img className="cvp__mobile-image" src={mobileImage} alt="" />}
         <canvas ref={canvasRef} className="cvp__canvas" />
         <video ref={videoRef} className="cvp__video" src={src} muted playsInline preload="auto" aria-hidden="true" />
       </div>
