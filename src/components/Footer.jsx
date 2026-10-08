@@ -1,140 +1,77 @@
 import React, { useState, useEffect } from 'react';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import { ArrowUp, Code2, Heart, ShieldCheck, Activity } from 'lucide-react';
+import { Code2, ArrowUp, Activity } from 'lucide-react';
 
 export default function Footer() {
   const [time, setTime] = useState('');
 
   useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTime(now.toUTCString().slice(17, 25) + ' UTC');
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
+    const tick = () => setTime(new Date().toUTCString().slice(17, 25));
+    tick();
+    const t = setInterval(tick, 1000);
+    return () => clearInterval(t);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <footer
-      style={{
-        borderTop: '1px solid var(--border-subtle)',
-        background: 'rgba(5, 4, 9, 0.95)',
-        padding: '48px 0 32px 0',
-        position: 'relative',
-        zIndex: 10
-      }}
-    >
+    <footer style={{
+      borderTop: '1px solid var(--border-1)',
+      background: 'rgba(4,5,9,0.96)',
+      padding: '40px 0 28px'
+    }}>
       <div className="container">
-        
-        {/* Top Footer Row */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '24px',
-            marginBottom: '36px'
-          }}
-        >
-          {/* Logo Brand */}
+        {/* Top row */}
+        <div style={{
+          display: 'flex', flexWrap: 'wrap',
+          alignItems: 'center', justifyContent: 'space-between',
+          gap: '20px', marginBottom: '28px'
+        }}>
+          {/* Brand */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div
-              style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '8px',
-                background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <Code2 size={18} color="#ffffff" />
+            <div style={{
+              width: '30px', height: '30px', borderRadius: '7px',
+              background: 'linear-gradient(135deg, #2563eb 0%, #06b6d4 100%)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center'
+            }}>
+              <Code2 size={16} color="#fff" />
             </div>
-            <span className="font-heading" style={{ fontWeight: 800, fontSize: '1.1rem', color: '#ffffff' }}>
+            <span style={{
+              fontFamily: 'var(--font-display)', fontWeight: 800,
+              fontSize: '1rem', color: '#fff'
+            }}>
               {PERSONAL_INFO.handle}
             </span>
           </div>
 
-          {/* System Telemetry Chips */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '16px' }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.78rem',
-                color: 'var(--accent-cyan-glow)',
-                background: 'rgba(6, 182, 212, 0.08)',
-                border: '1px solid rgba(6, 182, 212, 0.25)',
-                padding: '4px 12px',
-                borderRadius: 'var(--radius-full)'
-              }}
-            >
-              <Activity size={13} />
-              <span>SYS TIME: {time || 'CALCULATING...'}</span>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.78rem',
-                color: '#34d399',
-                background: 'rgba(16, 185, 129, 0.08)',
-                border: '1px solid rgba(16, 185, 129, 0.25)',
-                padding: '4px 12px',
-                borderRadius: 'var(--radius-full)'
-              }}
-            >
-              <ShieldCheck size={13} />
-              <span>ALL SERVICES OPERATIONAL</span>
-            </div>
+          {/* Live clock */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+            <Activity size={13} color="var(--cyan-light)" />
+            <span style={{ fontFamily: 'var(--font-code)', fontSize: '0.76rem', color: 'var(--text-400)' }}>
+              {time} UTC  ·  All systems operational
+            </span>
           </div>
 
-          {/* Back to Top */}
+          {/* Back to top */}
           <button
-            onClick={scrollToTop}
-            className="btn-cyber-secondary"
-            style={{ padding: '8px 16px', fontSize: '0.8rem' }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="btn btn-secondary"
+            style={{ padding: '8px 14px', fontSize: '0.8rem' }}
           >
-            <span>TOP</span>
-            <ArrowUp size={14} />
+            <ArrowUp size={14} /> Top
           </button>
         </div>
 
-        {/* Bottom Copyright & Credit */}
-        <div
-          style={{
-            borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-            paddingTop: '24px',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '12px',
-            color: 'var(--text-muted)',
-            fontSize: '0.82rem',
-            fontFamily: 'var(--font-mono)'
-          }}
-        >
-          <div>
-            © {new Date().getFullYear()} {PERSONAL_INFO.name}. Built with React, Three.js & Modern Web Standards.
-          </div>
-          <div>
-            High Performance • Scalable Architecture • MERN Stack
-          </div>
-        </div>
+        {/* Divider */}
+        <div className="divider" style={{ marginBottom: '22px' }} />
 
+        {/* Bottom */}
+        <div style={{
+          display: 'flex', flexWrap: 'wrap',
+          alignItems: 'center', justifyContent: 'space-between',
+          gap: '12px', fontSize: '0.8rem', color: 'var(--text-400)', fontFamily: 'var(--font-code)'
+        }}>
+          <span>© {new Date().getFullYear()} {PERSONAL_INFO.name}. Built with React + Vite + Three.js.</span>
+          <span>MERN Stack · High-Performance Architecture</span>
+        </div>
       </div>
     </footer>
   );

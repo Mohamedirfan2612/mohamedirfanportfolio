@@ -1,287 +1,152 @@
 import React, { useState } from 'react';
 import { PROJECTS_DATA } from '../data/portfolioData';
 import ProjectModal from './ProjectModal';
-import { ExternalLink, Eye, Sparkles, FolderGit2, Layers } from 'lucide-react';
+import { ExternalLink, Eye, FolderOpen } from 'lucide-react';
 import { GithubIcon } from './Icons';
 
+const CATS = ['All', 'MERN', 'Full Stack', 'AI & Tools', 'Frontend & WebSockets', 'Backend & Cloud'];
+
 export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [filter, setFilter] = useState('All');
+  const [selected, setSelected] = useState(null);
 
-  const categories = ['All', 'MERN', 'Full Stack', 'AI & Tools', 'Frontend & WebSockets', 'Backend & Cloud'];
-
-  const filteredProjects = activeCategory === 'All'
+  const filtered = filter === 'All'
     ? PROJECTS_DATA
-    : PROJECTS_DATA.filter((p) => p.category.toLowerCase().includes(activeCategory.toLowerCase()));
+    : PROJECTS_DATA.filter(p => p.category.toLowerCase().includes(filter.toLowerCase()));
 
   return (
-    <section id="projects" className="section-padding" style={{ position: 'relative' }}>
+    <section id="projects" className="section">
       <div className="container">
-        
-        {/* Section Header */}
+
         <div className="section-header">
-          <div className="badge-neon" style={{ marginBottom: '14px' }}>
-            <span>PORTFOLIO SHOWCASE</span>
-          </div>
-          <h2 className="neon-title text-gradient" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
-            Featured Projects
-          </h2>
-          <p className="section-subtitle">
-            Engineered with high performance, secure backends, and modern frontend design. Click on any project for technical breakdown.
+          <span className="section-label">Portfolio</span>
+          <h2 className="display-2">Featured Projects</h2>
+          <p>
+            High-impact applications built with the MERN stack. Click any project to explore the architecture.
           </p>
         </div>
 
-        {/* Category Filter Pills */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '10px',
-            marginBottom: '48px'
-          }}
-        >
-          {categories.map((cat) => (
+        {/* Filter Pills */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '40px' }}>
+          {CATS.map(cat => (
             <button
               key={cat}
-              onClick={() => setActiveCategory(cat)}
-              style={{
-                background: activeCategory === cat ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-deep) 100%)' : 'rgba(255, 255, 255, 0.04)',
-                color: activeCategory === cat ? '#ffffff' : 'var(--text-secondary)',
-                border: `1px solid ${activeCategory === cat ? 'var(--primary-glow)' : 'var(--border-subtle)'}`,
-                padding: '8px 18px',
-                borderRadius: 'var(--radius-full)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.82rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: activeCategory === cat ? '0 0 15px rgba(168, 85, 247, 0.4)' : 'none'
-              }}
+              onClick={() => setFilter(cat)}
+              className={`btn ${filter === cat ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '7px 16px', fontSize: '0.82rem', fontWeight: 500 }}
             >
               {cat}
             </button>
           ))}
         </div>
 
-        {/* Project Cards Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-            gap: '30px'
-          }}
-        >
-          {filteredProjects.map((project) => (
+        {/* Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+          gap: '20px'
+        }}>
+          {filtered.map(project => (
             <div
               key={project.id}
-              className="glass-panel"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                padding: '28px 24px',
-                background: 'rgba(14, 11, 24, 0.8)',
-                cursor: 'pointer'
-              }}
-              onClick={() => setSelectedProject(project)}
+              className="card"
+              style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
+              onClick={() => setSelected(project)}
             >
-              {/* Corner Cyber Decors */}
-              <div className="cyber-corner-top-left"></div>
-              <div className="cyber-corner-bottom-right"></div>
-
-              <div>
-                {/* Visual Header Banner */}
-                <div
-                  style={{
-                    height: '140px',
-                    borderRadius: 'var(--radius-sm)',
-                    background: project.imageTheme || 'linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%)',
-                    marginBottom: '20px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
-                    border: '1px solid rgba(255, 255, 255, 0.08)'
-                  }}
-                >
-                  <FolderGit2 size={36} color="var(--primary-glow)" style={{ marginBottom: '8px' }} />
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.78rem',
-                      color: '#ffffff',
-                      background: 'rgba(0,0,0,0.5)',
-                      padding: '3px 10px',
-                      borderRadius: '4px'
-                    }}
-                  >
-                    {project.badge}
-                  </span>
+              {/* Visual Header */}
+              <div style={{
+                height: '130px', borderRadius: 'var(--r-md)',
+                background: project.imageTheme || 'linear-gradient(135deg,#4c1d95,#1e1b4b)',
+                margin: '12px 12px 0',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                position: 'relative', overflow: 'hidden'
+              }}>
+                <FolderOpen size={32} color="rgba(255,255,255,0.5)" />
+                <div style={{
+                  position: 'absolute', bottom: '10px', left: '12px',
+                  fontFamily: 'var(--font-code)', fontSize: '0.72rem',
+                  color: 'rgba(255,255,255,0.6)', background: 'rgba(0,0,0,0.4)',
+                  padding: '2px 8px', borderRadius: '4px'
+                }}>
+                  {project.badge}
                 </div>
+              </div>
 
-                {/* Badges */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <span className="badge-cyan" style={{ fontSize: '0.7rem' }}>
-                    {project.category}
-                  </span>
-                  <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+              <div style={{ padding: '18px 20px 20px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                {/* Meta */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                  <span className="tag tag-blue">{project.category}</span>
+                  <span style={{ fontSize: '0.73rem', color: 'var(--text-400)', fontFamily: 'var(--font-code)' }}>
                     {project.tag}
                   </span>
                 </div>
 
-                {/* Project Title */}
-                <h3
-                  className="font-heading"
-                  style={{
-                    fontSize: '1.25rem',
-                    fontWeight: 700,
-                    color: '#ffffff',
-                    marginBottom: '10px',
-                    lineHeight: 1.3
-                  }}
-                >
+                {/* Title */}
+                <h3 style={{ fontWeight: 700, fontSize: '1.05rem', color: '#fff', lineHeight: 1.35, marginBottom: '8px' }}>
                   {project.title}
                 </h3>
 
-                {/* Short Description */}
-                <p
-                  style={{
-                    color: 'var(--text-secondary)',
-                    fontSize: '0.88rem',
-                    lineHeight: 1.6,
-                    marginBottom: '20px',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden'
-                  }}
-                >
+                {/* Desc */}
+                <p style={{
+                  color: 'var(--text-300)', fontSize: '0.87rem', lineHeight: 1.6,
+                  marginBottom: '16px', flexGrow: 1,
+                  display: '-webkit-box', WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical', overflow: 'hidden'
+                }}>
                   {project.description}
                 </p>
-              </div>
 
-              <div>
-                {/* Tech Chips */}
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '6px',
-                    marginBottom: '20px',
-                    borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-                    paddingTop: '14px'
-                  }}
-                >
-                  {project.tech.slice(0, 4).map((t, idx) => (
-                    <span
-                      key={idx}
-                      style={{
-                        background: 'rgba(168, 85, 247, 0.08)',
-                        border: '1px solid rgba(168, 85, 247, 0.2)',
-                        padding: '3px 8px',
-                        borderRadius: '4px',
-                        fontSize: '0.72rem',
-                        fontFamily: 'var(--font-mono)',
-                        color: 'var(--text-accent)'
-                      }}
-                    >
-                      {t}
-                    </span>
+                {/* Tech tags */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '16px' }}>
+                  {project.tech.slice(0, 4).map((t, i) => (
+                    <span key={i} style={{
+                      background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-1)',
+                      padding: '2px 8px', borderRadius: '4px',
+                      fontSize: '0.72rem', fontFamily: 'var(--font-code)', color: 'var(--text-400)'
+                    }}>{t}</span>
                   ))}
                   {project.tech.length > 4 && (
-                    <span
-                      style={{
-                        fontSize: '0.72rem',
-                        fontFamily: 'var(--font-mono)',
-                        color: 'var(--text-muted)',
-                        padding: '3px 6px'
-                      }}
-                    >
-                      +{project.tech.length - 4} more
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-400)', padding: '2px 4px', fontFamily: 'var(--font-code)' }}>
+                      +{project.tech.length - 4}
                     </span>
                   )}
                 </div>
 
                 {/* Actions */}
                 <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: '10px'
-                  }}
-                  onClick={(e) => e.stopPropagation()}
+                  style={{ display: 'flex', gap: '8px' }}
+                  onClick={e => e.stopPropagation()}
                 >
                   <button
-                    onClick={() => setSelectedProject(project)}
-                    className="btn-cyber-secondary"
-                    style={{
-                      padding: '8px 14px',
-                      fontSize: '0.78rem',
-                      flex: 1
-                    }}
+                    onClick={() => setSelected(project)}
+                    className="btn btn-secondary"
+                    style={{ flex: 1, fontSize: '0.82rem', padding: '8px 12px' }}
                   >
-                    <Eye size={14} />
-                    <span>Details</span>
+                    <Eye size={14} /> Details
                   </button>
-
                   <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-cyber-primary"
-                    style={{
-                      padding: '8px 14px',
-                      fontSize: '0.78rem',
-                      flex: 1
-                    }}
+                    href={project.liveUrl} target="_blank" rel="noopener noreferrer"
+                    className="btn btn-primary"
+                    style={{ flex: 1, fontSize: '0.82rem', padding: '8px 12px' }}
                   >
-                    <span>Demo</span>
-                    <ExternalLink size={14} />
+                    Demo <ExternalLink size={13} />
                   </a>
-
                   <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: 'var(--radius-sm)',
-                      background: 'rgba(255, 255, 255, 0.04)',
-                      border: '1px solid var(--border-subtle)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'var(--text-secondary)',
-                      textDecoration: 'none',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-                    title="GitHub Repository"
+                    href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+                    className="btn btn-secondary"
+                    style={{ padding: '8px 12px', minWidth: '36px' }}
+                    title="GitHub"
                   >
                     <GithubIcon size={16} />
                   </a>
                 </div>
-
               </div>
-
             </div>
           ))}
         </div>
-
       </div>
 
-      {/* Project Detail Modal */}
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
-      )}
+      {selected && <ProjectModal project={selected} onClose={() => setSelected(null)} />}
     </section>
   );
 }

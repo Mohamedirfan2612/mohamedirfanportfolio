@@ -1,7 +1,9 @@
 import React from 'react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import HeroThreeCanvas from './HeroThreeCanvas';
-import { ArrowRight, Terminal, Mail, Sparkles } from 'lucide-react';
+import CursorVideoPortrait from './CursorVideoPortrait';
+import heroVideo from '../videos/portfoliovideo.mp4';
+import { ArrowRight, Terminal, Mail, Download, MapPin } from 'lucide-react';
 
 export default function Hero() {
   return (
@@ -11,171 +13,128 @@ export default function Hero() {
         position: 'relative',
         minHeight: '100vh',
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        paddingTop: '120px',
-        paddingBottom: '80px',
-        overflow: 'hidden'
+        alignItems: 'center',
+        paddingTop: '100px',
+        paddingBottom: '60px',
+        overflow: 'hidden',
       }}
     >
-      {/* 3D WebGL Background Canvas */}
       <HeroThreeCanvas />
 
-      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-        <div style={{ maxWidth: '860px', margin: '0 auto', textAlign: 'center' }}>
-          
-          {/* Eyebrow Badge */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-            <div className="badge-neon" style={{ padding: '8px 20px', fontSize: '0.85rem' }}>
-              <Sparkles size={16} color="var(--primary-glow)" />
-              <span>{PERSONAL_INFO.role} & SYSTEM ARCHITECT</span>
-            </div>
+      <div className="container">
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'auto 1fr',
+            gap: 'clamp(40px, 5vw, 80px)',
+            alignItems: 'center',
+          }}
+          className="hero-grid"
+        >
+          {/* === LEFT: Real-Time Cursor-Synced Video Portrait === */}
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <CursorVideoPortrait
+              src={heroVideo}
+              width={280}
+              height={460}
+              smoothing={0.15}
+            />
           </div>
 
-          {/* Main Hero Glitch/Neon Heading */}
-          <h1
-            className="neon-title text-gradient"
-            style={{
-              fontSize: 'clamp(2.5rem, 6vw, 4.8rem)',
-              lineHeight: 1.08,
-              marginBottom: '20px',
-              letterSpacing: '-0.03em'
-            }}
-          >
-            {PERSONAL_INFO.name}
-          </h1>
+          {/* === RIGHT: Content === */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
 
-          {/* Interactive Code Preview Chip */}
-          <div
-            className="glass-panel"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '8px 20px',
-              marginBottom: '28px',
-              borderRadius: 'var(--radius-full)',
-              border: '1px solid var(--border-subtle)',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.85rem',
-              color: 'var(--text-accent)'
-            }}
-          >
-            <span style={{ color: '#ec4899' }}>const</span>
-            <span style={{ color: '#38bdf8' }}>techStack</span>
-            <span style={{ color: 'var(--text-muted)' }}>=</span>
-            <span style={{ color: '#a855f7' }}>['MongoDB', 'Express', 'React', 'Node.js']</span>
+            {/* Status line */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+              <span className="status-dot" />
+              <span style={{ fontSize: '0.82rem', color: 'var(--text-300)', fontFamily: 'var(--font-code)' }}>
+                Available for work
+              </span>
+              <span style={{ color: 'var(--border-2)', margin: '0 4px' }}>·</span>
+              <MapPin size={13} color="var(--text-400)" />
+              <span style={{ fontSize: '0.82rem', color: 'var(--text-400)', fontFamily: 'var(--font-code)' }}>
+                {PERSONAL_INFO.location}
+              </span>
+            </div>
+
+            {/* Name */}
+            <h1 className="display-1 gradient-text" style={{ marginBottom: '16px' }}>
+              {PERSONAL_INFO.name}
+            </h1>
+
+            {/* Role chip */}
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              background: 'rgba(37,99,235,0.1)', border: '1px solid rgba(37,99,235,0.25)',
+              borderRadius: 'var(--r-full)', padding: '6px 16px', marginBottom: '22px',
+              width: 'fit-content'
+            }}>
+              <span style={{ fontFamily: 'var(--font-code)', fontSize: '0.82rem', color: 'var(--blue-bright)' }}>
+                {'{'} {PERSONAL_INFO.role} {'}'}
+              </span>
+            </div>
+
+            {/* Tagline */}
+            <p style={{
+              fontSize: 'clamp(1rem, 1.6vw, 1.12rem)', color: 'var(--text-300)',
+              lineHeight: 1.75, marginBottom: '36px', maxWidth: '520px'
+            }}>
+              {PERSONAL_INFO.tagline}
+            </p>
+
+            {/* CTA Buttons */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '40px' }}>
+              <a href="#projects" className="btn btn-primary" id="hero-cta-projects">
+                View Projects <ArrowRight size={16} />
+              </a>
+              <a href="#contact" className="btn btn-secondary">
+                <Mail size={16} /> Get In Touch
+              </a>
+              <a href="#terminal" className="btn btn-ghost">
+                <Terminal size={16} /> Open CLI
+              </a>
+            </div>
+
+            {/* Stats Row */}
+            <div style={{
+              display: 'flex', gap: '32px', flexWrap: 'wrap',
+              paddingTop: '28px', borderTop: '1px solid var(--border-1)'
+            }}>
+              {[
+                { val: PERSONAL_INFO.yearsExperience, label: 'Years Exp.' },
+                { val: PERSONAL_INFO.projectsCompleted, label: 'Projects' },
+                { val: PERSONAL_INFO.codeUptime, label: 'Uptime' },
+                { val: PERSONAL_INFO.satisfiedClients, label: 'Satisfaction' },
+              ].map(stat => (
+                <div key={stat.label}>
+                  <div style={{
+                    fontFamily: 'var(--font-display)', fontWeight: 800,
+                    fontSize: '1.8rem', color: '#fff', lineHeight: 1.1
+                  }}>
+                    {stat.val}
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-400)', marginTop: '3px', fontFamily: 'var(--font-code)' }}>
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
           </div>
-
-          {/* Tagline Bio */}
-          <p
-            style={{
-              fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
-              color: 'var(--text-secondary)',
-              lineHeight: 1.7,
-              marginBottom: '40px',
-              maxWidth: '720px',
-              margin: '0 auto 40px auto'
-            }}
-          >
-            {PERSONAL_INFO.tagline}
-          </p>
-
-          {/* CTA Action Buttons */}
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '16px',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: '64px'
-            }}
-          >
-            <a href="#projects" className="btn-cyber-primary" id="hero-explore-projects">
-              <span>Explore Projects</span>
-              <ArrowRight size={18} />
-            </a>
-
-            <a href="#contact" className="btn-cyber-secondary">
-              <Mail size={18} color="var(--primary-glow)" />
-              <span>Get In Touch</span>
-            </a>
-
-            <a
-              href="#terminal"
-              className="btn-cyber-secondary"
-              style={{ padding: '12px 20px' }}
-              title="Open Interactive Terminal"
-            >
-              <Terminal size={18} color="var(--accent-cyan-glow)" />
-              <span>Launch Terminal</span>
-            </a>
-          </div>
-
-          {/* Quick Stats Grid */}
-          <div
-            className="glass-panel"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-              gap: '24px',
-              padding: '28px 24px',
-              background: 'rgba(14, 11, 24, 0.75)',
-              border: '1px solid var(--border-subtle)'
-            }}
-          >
-            <div style={{ textAlign: 'center' }}>
-              <div
-                className="font-heading text-gradient-purple"
-                style={{ fontSize: '2.2rem', fontWeight: 800 }}
-              >
-                {PERSONAL_INFO.yearsExperience}
-              </div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                Years Experience
-              </div>
-            </div>
-
-            <div style={{ textAlign: 'center' }}>
-              <div
-                className="font-heading text-gradient-purple"
-                style={{ fontSize: '2.2rem', fontWeight: 800 }}
-              >
-                {PERSONAL_INFO.projectsCompleted}
-              </div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                Projects Shipped
-              </div>
-            </div>
-
-            <div style={{ textAlign: 'center' }}>
-              <div
-                className="font-heading text-gradient-purple"
-                style={{ fontSize: '2.2rem', fontWeight: 800 }}
-              >
-                {PERSONAL_INFO.codeUptime}
-              </div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                Uptime Reliability
-              </div>
-            </div>
-
-            <div style={{ textAlign: 'center' }}>
-              <div
-                className="font-heading text-gradient-purple"
-                style={{ fontSize: '2.2rem', fontWeight: 800 }}
-              >
-                {PERSONAL_INFO.satisfiedClients}
-              </div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                Satisfaction Rate
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 860px) {
+          .hero-grid {
+            grid-template-columns: 1fr !important;
+            text-align: center !important;
+            justify-items: center;
+          }
+          .hero-grid > div { align-items: center !important; }
+          .hero-grid p { max-width: 100% !important; }
+        }
+      `}</style>
     </header>
   );
 }

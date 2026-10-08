@@ -1,155 +1,69 @@
 import React from 'react';
 import { CORE_SERVICES } from '../data/portfolioData';
-import { Layout, Server, Database, Cloud, CheckCircle2, ArrowUpRight } from 'lucide-react';
+import { Layout, Server, Database, Cloud } from 'lucide-react';
 
-const iconMap = {
-  Layout: Layout,
-  Server: Server,
-  Database: Database,
-  Cloud: Cloud
-};
+const ICONS = { Layout, Server, Database, Cloud };
 
 export default function WhatIDo() {
   return (
-    <section id="services" className="section-padding" style={{ position: 'relative' }}>
+    <section id="services" className="section">
       <div className="container">
         
-        {/* Section Header */}
         <div className="section-header">
-          <div className="badge-neon" style={{ marginBottom: '14px' }}>
-            <span>ENGINEERING ARCHITECTURE</span>
-          </div>
-          <h2 className="neon-title text-gradient" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
-            What I Engineer
-          </h2>
-          <p className="section-subtitle">
-            Specialized in end-to-end full stack development, transforming complex business logic into high-throughput scalable software.
+          <span className="section-label">What I Build</span>
+          <h2 className="display-2">Engineering Capabilities</h2>
+          <p>
+            End-to-end ownership of product features — from database schema to polished user interface.
           </p>
         </div>
 
-        {/* Services 2x2 Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '28px'
-          }}
-        >
-          {CORE_SERVICES.map((service, idx) => {
-            const IconComponent = iconMap[service.icon] || Layout;
-
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '20px'
+        }}>
+          {CORE_SERVICES.map((s, i) => {
+            const Icon = ICONS[s.icon] || Layout;
             return (
-              <div
-                key={service.id}
-                className="glass-panel"
-                style={{
-                  padding: '36px 30px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  background: 'rgba(15, 12, 26, 0.75)'
-                }}
-              >
-                {/* Cyber Corner Marks */}
-                <div className="cyber-corner-top-left"></div>
-                <div className="cyber-corner-bottom-right"></div>
-
-                <div>
-                  {/* Top Bar: Icon + Badge */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      marginBottom: '24px'
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '52px',
-                        height: '52px',
-                        borderRadius: '12px',
-                        background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(6, 182, 212, 0.15) 100%)',
-                        border: '1px solid var(--border-subtle)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--primary-glow)',
-                        boxShadow: '0 0 15px rgba(168, 85, 247, 0.2)'
-                      }}
-                    >
-                      <IconComponent size={26} />
-                    </div>
-
-                    <span className="badge-cyan" style={{ fontSize: '0.72rem' }}>
-                      {service.badge}
-                    </span>
-                  </div>
-
-                  {/* Title & Description */}
-                  <h3
-                    className="font-heading"
-                    style={{
-                      fontSize: '1.45rem',
-                      fontWeight: 700,
-                      color: '#ffffff',
-                      marginBottom: '14px'
-                    }}
-                  >
-                    {service.title}
-                  </h3>
-
-                  <p
-                    style={{
-                      color: 'var(--text-secondary)',
-                      fontSize: '0.94rem',
-                      lineHeight: 1.65,
-                      marginBottom: '24px'
-                    }}
-                  >
-                    {service.description}
-                  </p>
+              <div key={s.id} className="card" style={{ padding: '28px 26px' }}>
+                {/* Icon */}
+                <div style={{
+                  width: '44px', height: '44px', borderRadius: '10px',
+                  background: 'rgba(37,99,235,0.12)', border: '1px solid rgba(37,99,235,0.2)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'var(--blue-bright)', marginBottom: '18px'
+                }}>
+                  <Icon size={22} />
                 </div>
 
-                {/* Tech Chips */}
-                <div>
-                  <div
-                    style={{
-                      borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-                      paddingTop: '20px',
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      gap: '8px'
-                    }}
-                  >
-                    {service.skills.map((skill, sIdx) => (
-                      <span
-                        key={sIdx}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          background: 'rgba(255, 255, 255, 0.03)',
-                          border: '1px solid rgba(168, 85, 247, 0.15)',
-                          padding: '4px 10px',
-                          borderRadius: '6px',
-                          fontSize: '0.78rem',
-                          fontFamily: 'var(--font-mono)',
-                          color: 'var(--text-accent)'
-                        }}
-                      >
-                        <CheckCircle2 size={12} color="var(--primary-glow)" />
-                        <span>{skill}</span>
-                      </span>
-                    ))}
-                  </div>
+                {/* Label */}
+                <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <h3 style={{ fontWeight: 700, fontSize: '1.1rem', color: '#fff' }}>{s.title}</h3>
+                  <span className="tag tag-cyan" style={{ fontSize: '0.68rem' }}>{s.badge}</span>
                 </div>
 
+                {/* Desc */}
+                <p style={{ color: 'var(--text-300)', fontSize: '0.9rem', lineHeight: 1.65, marginBottom: '22px' }}>
+                  {s.description}
+                </p>
+
+                {/* Skills */}
+                <div style={{
+                  paddingTop: '18px', borderTop: '1px solid var(--border-1)',
+                  display: 'flex', flexWrap: 'wrap', gap: '6px'
+                }}>
+                  {s.skills.map((sk, si) => (
+                    <span key={si} style={{
+                      background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-1)',
+                      padding: '3px 9px', borderRadius: '5px',
+                      fontSize: '0.75rem', fontFamily: 'var(--font-code)', color: 'var(--text-300)'
+                    }}>{sk}</span>
+                  ))}
+                </div>
               </div>
             );
           })}
         </div>
-
       </div>
     </section>
   );

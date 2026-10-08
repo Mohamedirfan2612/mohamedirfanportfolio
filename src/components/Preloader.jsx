@@ -1,156 +1,94 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Shield, Zap, Sparkles } from 'lucide-react';
+import { Zap } from 'lucide-react';
+
+const LOGS = [
+  { at: 0, text: 'Initializing runtime…' },
+  { at: 20, text: 'Loading React modules…' },
+  { at: 45, text: 'Connecting Node.js bridges…' },
+  { at: 68, text: 'Configuring MongoDB schemas…' },
+  { at: 85, text: 'Rendering WebGL shaders…' },
+  { at: 100, text: 'Ready.' },
+];
 
 export default function Preloader({ onComplete }) {
   const [progress, setProgress] = useState(0);
-  const [logText, setLogText] = useState('BOOTING MERN ENGINE...');
+  const [log, setLog] = useState(LOGS[0].text);
 
   useEffect(() => {
-    const logs = [
-      { at: 15, text: 'LOADING REACT CORE & FIBER MODULES...' },
-      { at: 45, text: 'INITIALIZING NODE RUNTIME & API BRIDGES...' },
-      { at: 75, text: 'CONFIGURING MONGODB SCHEMAS & REDIS CACHE...' },
-      { at: 95, text: 'SYNCHRONIZING 3D WEBGL GRAPHICS SHADERS...' },
-      { at: 100, text: 'SYSTEM READY. WELCOME TO MOHAMED IRFAN PORTFOLIO.' }
-    ];
-
-    const timer = setInterval(() => {
-      setProgress((prev) => {
+    const interval = setInterval(() => {
+      setProgress(prev => {
         if (prev >= 100) {
-          clearInterval(timer);
-          setTimeout(onComplete, 400);
+          clearInterval(interval);
+          setTimeout(onComplete, 350);
           return 100;
         }
-        const next = prev + Math.floor(Math.random() * 8) + 4;
-        const current = next > 100 ? 100 : next;
-        
-        const matchingLog = logs.find(l => current >= l.at);
-        if (matchingLog) setLogText(matchingLog.text);
-
-        return current;
+        const next = Math.min(prev + Math.floor(Math.random() * 9) + 5, 100);
+        const matching = [...LOGS].reverse().find(l => next >= l.at);
+        if (matching) setLog(matching.text);
+        return next;
       });
-    }, 45);
-
-    return () => clearInterval(timer);
+    }, 40);
+    return () => clearInterval(interval);
   }, [onComplete]);
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        backgroundColor: '#050408',
-        zIndex: 9999,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '24px'
-      }}
-    >
-      <div style={{ maxWidth: '440px', width: '100%', textAlign: 'center' }}>
-        
-        {/* Cyber Logo Icon */}
-        <div
-          style={{
-            width: '64px',
-            height: '64px',
-            borderRadius: '16px',
-            background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 24px auto',
-            boxShadow: '0 0 30px rgba(168, 85, 247, 0.6)'
-          }}
-        >
-          <Zap size={32} color="#ffffff" />
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: '#040509',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      padding: '24px'
+    }}>
+      <div style={{ maxWidth: '360px', width: '100%', textAlign: 'center' }}>
+        {/* Icon */}
+        <div style={{
+          width: '56px', height: '56px', borderRadius: '14px',
+          background: 'linear-gradient(135deg, #2563eb, #06b6d4)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          margin: '0 auto 20px', boxShadow: '0 0 24px rgba(37,99,235,0.5)'
+        }}>
+          <Zap size={28} color="#fff" />
         </div>
 
-        {/* System Title */}
-        <h2
-          className="font-heading text-gradient"
-          style={{
-            fontSize: '1.5rem',
-            fontWeight: 800,
-            letterSpacing: '0.05em',
-            marginBottom: '8px'
-          }}
-        >
-          MOHAMED IRFAN
-        </h2>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-accent)', marginBottom: '24px' }}>
-          MERN STACK ARCHITECTURE
+        <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 800, color: '#fff', marginBottom: '4px' }}>
+          Mohamed Irfan
+        </div>
+        <div style={{ fontFamily: 'var(--font-code)', fontSize: '0.75rem', color: 'var(--text-400)', marginBottom: '28px' }}>
+          MERN Stack Developer
         </div>
 
-        {/* Progress Bar */}
-        <div
-          style={{
-            height: '6px',
-            width: '100%',
-            background: 'rgba(255, 255, 255, 0.08)',
-            borderRadius: 'var(--radius-full)',
-            overflow: 'hidden',
-            marginBottom: '14px',
-            position: 'relative',
-            border: '1px solid rgba(168, 85, 247, 0.2)'
-          }}
-        >
-          <div
-            style={{
-              height: '100%',
-              width: `${progress}%`,
-              background: 'linear-gradient(90deg, var(--primary) 0%, var(--accent-cyan) 100%)',
-              borderRadius: 'var(--radius-full)',
-              boxShadow: '0 0 15px var(--primary-glow)',
-              transition: 'width 0.06s ease'
-            }}
-          />
+        {/* Progress */}
+        <div style={{
+          height: '3px', background: 'rgba(255,255,255,0.07)',
+          borderRadius: '99px', overflow: 'hidden', marginBottom: '12px'
+        }}>
+          <div style={{
+            height: '100%', width: `${progress}%`,
+            background: 'linear-gradient(90deg, #2563eb, #06b6d4)',
+            borderRadius: '99px', transition: 'width 0.05s ease'
+          }} />
         </div>
 
-        {/* Progress Text & Telemetry Log */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.8rem',
-            color: 'var(--accent-cyan-glow)',
-            marginBottom: '12px'
-          }}
-        >
-          <span>SYSTEM BOOT</span>
-          <span style={{ fontWeight: 700, color: '#ffffff' }}>{progress}%</span>
+        <div style={{
+          display: 'flex', justifyContent: 'space-between',
+          fontFamily: 'var(--font-code)', fontSize: '0.73rem',
+          color: 'var(--text-400)', marginBottom: '8px'
+        }}>
+          <span>{log}</span>
+          <span style={{ color: '#fff', fontWeight: 700 }}>{progress}%</span>
         </div>
 
-        <div
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.72rem',
-            color: 'var(--text-muted)',
-            minHeight: '20px'
-          }}
-        >
-          {logText}
-        </div>
-
-        {/* Quick Skip Button */}
         <button
           onClick={onComplete}
           style={{
-            marginTop: '28px',
-            background: 'transparent',
-            border: 'none',
-            color: 'var(--text-muted)',
-            fontSize: '0.75rem',
-            fontFamily: 'var(--font-mono)',
-            cursor: 'pointer',
-            textDecoration: 'underline'
+            marginTop: '20px', background: 'none', border: 'none',
+            color: 'var(--text-400)', fontSize: '0.75rem',
+            fontFamily: 'var(--font-code)', cursor: 'pointer',
+            textDecoration: 'underline', textUnderlineOffset: '3px'
           }}
         >
-          Skip Boot Sequence
+          Skip
         </button>
-
       </div>
     </div>
   );

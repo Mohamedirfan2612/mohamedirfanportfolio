@@ -15,30 +15,30 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className="app-wrapper" style={{ position: 'relative', minHeight: '100vh' }}>
-      {/* Background Animated Cyber Grid */}
-      <div className="cyber-bg" />
+    <div style={{ position: 'relative', minHeight: '100vh' }}>
+      {/* Background layer */}
+      <div className="site-bg" />
 
-      {/* Boot Preloader */}
+      {/* Preloader */}
       {loading && <Preloader onComplete={() => setLoading(false)} />}
 
-      {/* Main Portfolio Navigation */}
-      <Navbar />
-
-      {/* Hero Section with Interactive 3D WebGL Canvas */}
-      <main>
-        <Hero />
-        <MarqueeBanner />
-        <WhatIDo />
-        <ExperienceTimeline />
-        <Projects />
-        <SkillsMatrix />
-        <TerminalPlayground />
-        <Contact />
-      </main>
-
-      {/* System Diagnostics & Telemetry Footer */}
-      <Footer />
+      {/* App */}
+      {!loading && (
+        <>
+          <Navbar />
+          <main>
+            <Hero />
+            <MarqueeBanner />
+            <WhatIDo />
+            <ExperienceTimeline />
+            <Projects />
+            <SkillsMatrix />
+            <TerminalPlayground />
+            <Contact />
+          </main>
+          <Footer />
+        </>
+      )}
     </div>
   );
 }

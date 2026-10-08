@@ -1,278 +1,170 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { PERSONAL_INFO, PROJECTS_DATA } from '../data/portfolioData';
-import { Terminal as TerminalIcon, Sparkles, CornerDownLeft, Circle } from 'lucide-react';
+import { CornerDownLeft } from 'lucide-react';
+
+const COMMANDS = {
+  help: () => `AVAILABLE COMMANDS:
+  about      · Developer info & background
+  stack      · Core MERN tech expertise
+  projects   · List all featured projects
+  contact    · Email & social links
+  hire       · Availability & hiring info
+  clear      · Clear this terminal
+  matrix     · A little easter egg`,
+
+  about: () => `${PERSONAL_INFO.name}  |  ${PERSONAL_INFO.role}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${PERSONAL_INFO.bio}
+Experience: ${PERSONAL_INFO.yearsExperience} Years  ·  Projects: ${PERSONAL_INFO.projectsCompleted}`,
+
+  stack: () => `CORE TECHNICAL STACK:
+━━━━━━━━━━━━━━━━━━━━━━
+Frontend  →  React 18, Next.js, Redux, TypeScript, Three.js
+Backend   →  Node.js, Express.js, REST APIs, GraphQL, Socket.io
+Database  →  MongoDB, Mongoose, Redis, PostgreSQL
+DevOps    →  Docker, AWS, GitHub Actions, NGINX`,
+
+  projects: () => PROJECTS_DATA.map((p, i) => `[${i + 1}] ${p.title}\n    Stack: ${p.badge}\n    Demo: ${p.liveUrl}`).join('\n\n'),
+
+  contact: () => `EMAIL:      ${PERSONAL_INFO.email}
+GITHUB:     ${PERSONAL_INFO.socials.github}
+LINKEDIN:   ${PERSONAL_INFO.socials.linkedin}
+TWITTER:    ${PERSONAL_INFO.socials.twitter}
+STATUS:     ${PERSONAL_INFO.availability}`,
+
+  hire: () => `>>> AVAILABILITY: OPEN FOR WORK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${PERSONAL_INFO.name} is available for full-time roles and high-impact contracts.
+→ Email: ${PERSONAL_INFO.email}`,
+
+  matrix: () => `01001101 01000101 01010010 01001110\n>>> FOLLOW THE WHITE RABBIT, NEO.`,
+};
 
 export default function TerminalPlayground() {
-  const [inputVal, setInputVal] = useState('');
+  const [input, setInput] = useState('');
   const [history, setHistory] = useState([
-    { type: 'system', text: '⚡ MOHAMED IRFAN CYBER-SHELL v2.6.0 (x86_64-node-mern)' },
-    { type: 'system', text: 'Type "help" to see available terminal commands, or "projects" to list applications.' }
+    { type: 'system', text: `Mohamed Irfan CLI  v1.0.0  ·  Node ${navigator.userAgent.includes('Chrome') ? 'Chrome' : 'Browser'}` },
+    { type: 'muted', text: 'Type "help" to see all available commands.' },
   ]);
-
-  const terminalEndRef = useRef(null);
+  const endRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history]);
 
-  const handleCommand = (e) => {
+  const run = (e) => {
     e.preventDefault();
-    const cmd = inputVal.trim().toLowerCase();
+    const cmd = input.trim().toLowerCase();
     if (!cmd) return;
 
-    const newHistory = [...history, { type: 'user', text: `$ ${inputVal}` }];
+    const next = [...history, { type: 'input', text: `$ ${input}` }];
 
-    switch (cmd) {
-      case 'help':
-        newHistory.push({
-          type: 'output',
-          text: `AVAILABLE COMMANDS:
-  • about      - Learn about Mohamed Irfan & background
-  • stack      - View core MERN stack & architectural skills
-  • projects   - List featured projects and live demos
-  • contact    - Get email & direct social links
-  • hire       - Instant hiring information & availability
-  • matrix     - Enter the matrix stream
-  • sudo       - Request root privileges
-  • clear      - Clear terminal screen`
-        });
-        break;
-
-      case 'about':
-      case 'bio':
-        newHistory.push({
-          type: 'output',
-          text: `Name: ${PERSONAL_INFO.name}
-Role: ${PERSONAL_INFO.role}
-Bio: ${PERSONAL_INFO.bio}
-Experience: ${PERSONAL_INFO.yearsExperience} Years | Shipped: ${PERSONAL_INFO.projectsCompleted}`
-        });
-        break;
-
-      case 'stack':
-      case 'skills':
-        newHistory.push({
-          type: 'output',
-          text: `[CORE STACK]
-• Frontend: React 18, Next.js, Redux Toolkit, JavaScript ES6+, TypeScript, Three.js
-• Backend: Node.js, Express.js, RESTful APIs, GraphQL, Socket.io, JWT
-• Database: MongoDB, Mongoose, Redis Caching, PostgreSQL
-• DevOps: Docker, AWS (S3/EC2), NGINX, GitHub Actions CI/CD`
-        });
-        break;
-
-      case 'projects':
-        newHistory.push({
-          type: 'output',
-          text: PROJECTS_DATA.map(
-            (p, idx) => `[${idx + 1}] ${p.title} (${p.badge})\n    Demo: ${p.liveUrl}\n    Code: ${p.githubUrl}`
-          ).join('\n\n')
-        });
-        break;
-
-      case 'contact':
-        newHistory.push({
-          type: 'output',
-          text: `📧 Email: ${PERSONAL_INFO.email}
-💼 LinkedIn: ${PERSONAL_INFO.socials.linkedin}
-🐙 GitHub: ${PERSONAL_INFO.socials.github}
-🐦 Twitter: ${PERSONAL_INFO.socials.twitter}
-📱 Status: ${PERSONAL_INFO.availability}`
-        });
-        break;
-
-      case 'hire':
-        newHistory.push({
-          type: 'output',
-          text: `>>> INITIATING RAPID HIRE PROTOCOL...
-Mohamed Irfan is currently: [AVAILABLE FOR CONTRACTS & FULL-TIME ROLES]
-Direct Email: ${PERSONAL_INFO.email}
-Reach out via the contact form below or drop an email for immediate response!`
-        });
-        break;
-
-      case 'matrix':
-        newHistory.push({
-          type: 'output',
-          text: `01001101 01000101 01010010 01001110 00100000 01010011 01010100 01000001 01000011 01001011 
-WAKE UP, NEO... THE MERN ECOSYSTEM HAS YOU. FOLLOW THE WHITE RABBIT.`
-        });
-        break;
-
-      case 'sudo':
-        newHistory.push({
-          type: 'output',
-          text: `Permission denied: Mohamed Irfan is already root on this server.`
-        });
-        break;
-
-      case 'clear':
-        setHistory([]);
-        setInputVal('');
-        return;
-
-      default:
-        newHistory.push({
-          type: 'output',
-          text: `Command not recognized: "${cmd}". Type "help" for a list of valid commands.`
-        });
-        break;
+    if (cmd === 'clear') {
+      setHistory([]);
+      setInput('');
+      return;
     }
 
-    setHistory(newHistory);
-    setInputVal('');
+    const fn = COMMANDS[cmd];
+    next.push(fn
+      ? { type: 'output', text: fn() }
+      : { type: 'error', text: `Command not found: "${cmd}". Type "help" for the command list.` }
+    );
+
+    setHistory(next);
+    setInput('');
   };
 
   return (
-    <section id="terminal" className="section-padding" style={{ position: 'relative' }}>
+    <section id="terminal" className="section">
       <div className="container">
         
-        {/* Section Header */}
         <div className="section-header">
-          <div className="badge-neon" style={{ marginBottom: '14px' }}>
-            <span>INTERACTIVE PLAYGROUND</span>
-          </div>
-          <h2 className="neon-title text-gradient" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
-            Cyber CLI Terminal
-          </h2>
-          <p className="section-subtitle">
-            Prefer keyboard shortcuts? Query my credentials, architecture, and live projects directly from the shell.
-          </p>
+          <span className="section-label">Playground</span>
+          <h2 className="display-2">Interactive CLI</h2>
+          <p>Query my profile, projects, and skills directly from the terminal.</p>
         </div>
 
-        {/* Terminal Window Box */}
         <div
-          className="glass-panel"
-          style={{
-            maxWidth: '860px',
-            margin: '0 auto',
-            background: 'rgba(9, 7, 15, 0.95)',
-            border: '1px solid var(--border-glow)',
-            boxShadow: 'var(--glow-md)',
-            borderRadius: 'var(--radius-md)',
-            overflow: 'hidden'
-          }}
+          style={{ maxWidth: '800px' }}
+          onClick={() => inputRef.current?.focus()}
         >
-          {/* Terminal Titlebar */}
-          <div
-            style={{
-              background: 'rgba(255, 255, 255, 0.04)',
-              borderBottom: '1px solid var(--border-subtle)',
-              padding: '12px 18px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ef4444', display: 'inline-block' }}></span>
-              <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#eab308', display: 'inline-block' }}></span>
-              <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#22c55e', display: 'inline-block' }}></span>
-            </div>
-
-            <div
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.8rem',
-                color: 'var(--text-secondary)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-            >
-              <TerminalIcon size={14} color="var(--primary-glow)" />
-              <span>irfan@cyber-workstation:~</span>
-            </div>
-
-            <div style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-              bash 5.2.15
-            </div>
-          </div>
-
-          {/* Terminal Output Area */}
-          <div
-            style={{
-              padding: '24px',
-              minHeight: '280px',
-              maxHeight: '400px',
-              overflowY: 'auto',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.88rem',
-              lineHeight: 1.6
-            }}
-          >
-            {history.map((line, idx) => (
-              <div
-                key={idx}
-                style={{
-                  marginBottom: '10px',
-                  color: line.type === 'user'
-                    ? '#ffffff'
-                    : line.type === 'system'
-                    ? 'var(--accent-cyan-glow)'
-                    : 'var(--text-accent)',
-                  whiteSpace: 'pre-wrap',
-                  wordBreak: 'break-word'
-                }}
-              >
-                {line.text}
+          <div className="card" style={{
+            background: 'rgba(4,5,9,0.95)',
+            border: '1px solid var(--border-2)',
+            borderRadius: 'var(--r-lg)',
+            overflow: 'hidden',
+            cursor: 'text'
+          }}>
+            {/* Title bar */}
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '12px 18px', background: 'rgba(255,255,255,0.025)',
+              borderBottom: '1px solid var(--border-1)'
+            }}>
+              <div style={{ display: 'flex', gap: '7px' }}>
+                {['#ef4444', '#eab308', '#22c55e'].map((c, i) => (
+                  <span key={i} style={{ width: '11px', height: '11px', borderRadius: '50%', background: c, opacity: 0.8 }} />
+                ))}
               </div>
-            ))}
-            <div ref={terminalEndRef} />
+              <span style={{ fontFamily: 'var(--font-code)', fontSize: '0.78rem', color: 'var(--text-400)' }}>
+                irfan@portfolio ~ bash
+              </span>
+              <div />
+            </div>
+
+            {/* Output area */}
+            <div style={{
+              padding: '20px', minHeight: '260px', maxHeight: '380px', overflowY: 'auto',
+              fontFamily: 'var(--font-code)', fontSize: '0.86rem', lineHeight: 1.65
+            }}>
+              {history.map((line, i) => (
+                <div key={i} style={{
+                  marginBottom: '6px',
+                  whiteSpace: 'pre-wrap', wordBreak: 'break-word',
+                  color: line.type === 'input' ? '#fff'
+                    : line.type === 'system' ? 'var(--cyan-light)'
+                    : line.type === 'muted' ? 'var(--text-400)'
+                    : line.type === 'error' ? '#f87171'
+                    : 'var(--blue-bright)'
+                }}>
+                  {line.text}
+                </div>
+              ))}
+              <div ref={endRef} />
+            </div>
+
+            {/* Input row */}
+            <form onSubmit={run} style={{
+              display: 'flex', alignItems: 'center', gap: '10px',
+              padding: '12px 18px',
+              borderTop: '1px solid var(--border-1)',
+              background: 'rgba(0,0,0,0.3)'
+            }}>
+              <span style={{ fontFamily: 'var(--font-code)', color: 'var(--blue-light)', fontWeight: 700, flexShrink: 0 }}>❯</span>
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                placeholder="type a command…"
+                autoComplete="off"
+                spellCheck={false}
+                style={{
+                  flex: 1, background: 'transparent', border: 'none', outline: 'none',
+                  color: '#fff', fontFamily: 'var(--font-code)', fontSize: '0.86rem'
+                }}
+              />
+              <button type="submit" style={{
+                background: 'transparent', border: 'none',
+                color: 'var(--text-400)', cursor: 'pointer', display: 'flex'
+              }}>
+                <CornerDownLeft size={15} />
+              </button>
+            </form>
           </div>
-
-          {/* Terminal Input Row */}
-          <form
-            onSubmit={handleCommand}
-            style={{
-              borderTop: '1px solid var(--border-subtle)',
-              padding: '14px 20px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              background: 'rgba(0, 0, 0, 0.4)'
-            }}
-          >
-            <span style={{ color: 'var(--primary-glow)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
-              ➜
-            </span>
-            <span style={{ color: 'var(--accent-cyan-glow)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
-              ~/portfolio
-            </span>
-            <input
-              type="text"
-              value={inputVal}
-              onChange={(e) => setInputVal(e.target.value)}
-              placeholder="type 'help', 'stack', 'projects', 'contact'..."
-              aria-label="Terminal input command"
-              style={{
-                flex: 1,
-                background: 'transparent',
-                border: 'none',
-                outline: 'none',
-                color: '#ffffff',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.9rem'
-              }}
-            />
-            <button
-              type="submit"
-              aria-label="Submit command"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--primary-glow)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              <CornerDownLeft size={16} />
-            </button>
-          </form>
-
         </div>
-
       </div>
     </section>
   );

@@ -1,106 +1,76 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 
 export default function AudioVisualizer() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioCtxRef = useRef(null);
-  const oscNodesRef = useRef([]);
+  const [on, setOn] = useState(false);
+  const ctxRef = React.useRef(null);
 
-  const toggleAudio = () => {
-    if (isPlaying) {
-      // Stop audio
-      if (audioCtxRef.current) {
-        audioCtxRef.current.close();
-        audioCtxRef.current = null;
-      }
-      setIsPlaying(false);
+  const toggle = () => {
+    if (on) {
+      ctxRef.current?.close();
+      ctxRef.current = null;
+      setOn(false);
     } else {
-      // Start ambient synth with Web Audio API
       try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioContext();
-        audioCtxRef.current = ctx;
-
-        // Create warm ambient sci-fi chords
-        const freqs = [110, 164.81, 220, 329.63]; // A2, E3, A3, E4 chord
-        const gainNode = ctx.createGain();
-        gainNode.gain.setValueAtTime(0.04, ctx.currentTime);
-        gainNode.connect(ctx.destination);
-
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        ctxRef.current = ctx;
+        const gain = ctx.createGain();
+        gain.gain.value = 0.035;
+        gain.connect(ctx.destination);
         const filter = ctx.createBiquadFilter();
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(450, ctx.currentTime);
-        filter.connect(gainNode);
-
-        const nodes = freqs.map((f, i) => {
+        filter.frequency.value = 420;
+        filter.connect(gain);
+        [110, 164.81, 220, 329.63].forEach((f, i) => {
           const osc = ctx.createOscillator();
           osc.type = i % 2 === 0 ? 'sine' : 'triangle';
-          osc.frequency.setValueAtTime(f, ctx.currentTime);
-
-          // Subtle LFO modulation for breathing cyber feel
+          osc.frequency.value = f;
           const lfo = ctx.createOscillator();
           const lfoGain = ctx.createGain();
-          lfo.frequency.setValueAtTime(0.2 + i * 0.05, ctx.currentTime);
-          lfoGain.gain.setValueAtTime(2.5, ctx.currentTime);
+          lfo.frequency.value = 0.18 + i * 0.04;
+          lfoGain.gain.value = 2;
           lfo.connect(lfoGain);
           lfoGain.connect(osc.frequency);
           lfo.start();
-
           osc.connect(filter);
           osc.start();
-          return { osc, lfo };
         });
-
-        oscNodesRef.current = nodes;
-        setIsPlaying(true);
-      } catch (err) {
-        console.warn("Audio context not allowed or failed:", err);
-      }
+        setOn(true);
+      } catch {}
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (audioCtxRef.current) {
-        audioCtxRef.current.close();
-      }
-    };
-  }, []);
+  React.useEffect(() => () => ctxRef.current?.close(), []);
 
   return (
     <button
-      onClick={toggleAudio}
-      className="audio-btn"
-      title={isPlaying ? "Mute Ambient Synth" : "Play Cyber Ambient Sound"}
+      onClick={toggle}
+      title={on ? 'Mute ambient audio' : 'Play ambient audio'}
       style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '8px',
-        padding: '6px 14px',
-        background: isPlaying ? 'rgba(168, 85, 247, 0.2)' : 'rgba(255, 255, 255, 0.05)',
-        border: `1px solid ${isPlaying ? 'var(--primary)' : 'var(--border-subtle)'}`,
-        borderRadius: 'var(--radius-full)',
-        color: isPlaying ? 'var(--primary-glow)' : 'var(--text-secondary)',
-        cursor: 'pointer',
-        fontSize: '0.78rem',
-        fontFamily: 'var(--font-mono)',
-        transition: 'all 0.2s ease',
+        display: 'inline-flex', alignItems: 'center', gap: '7px',
+        padding: '6px 12px',
+        background: on ? 'rgba(37,99,235,0.15)' : 'rgba(255,255,255,0.04)',
+        border: `1px solid ${on ? 'rgba(37,99,235,0.4)' : 'var(--border-1)'}`,
+        borderRadius: 'var(--r-full)',
+        color: on ? 'var(--blue-bright)' : 'var(--text-400)',
+        cursor: 'pointer', fontSize: '0.75rem',
+        fontFamily: 'var(--font-code)', transition: 'all 0.2s ease'
       }}
     >
-      {isPlaying ? (
+      {on ? (
         <>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '3px', height: '14px' }}>
-            <span className="eq-bar" style={{ animationDuration: '0.8s' }}></span>
-            <span className="eq-bar" style={{ animationDuration: '1.2s' }}></span>
-            <span className="eq-bar" style={{ animationDuration: '0.6s' }}></span>
-            <span className="eq-bar" style={{ animationDuration: '1.0s' }}></span>
+          <div className="eq-bars">
+            <div className="eq-bar" />
+            <div className="eq-bar" />
+            <div className="eq-bar" />
+            <div className="eq-bar" />
           </div>
-          <span style={{ fontWeight: 600 }}>AUDIO ON</span>
+          <span>AUDIO ON</span>
         </>
       ) : (
         <>
-          <VolumeX size={14} />
-          <span>AUDIO OFF</span>
+          <VolumeX size={13} />
+          <span>AUDIO</span>
         </>
       )}
     </button>

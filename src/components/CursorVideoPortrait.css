@@ -1,0 +1,63 @@
+.cvp {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(59, 130, 246, 0.55);
+  box-shadow: 0 0 30px rgba(37, 99, 235, 0.35),
+    inset 0 0 20px rgba(37, 99, 235, 0.15);
+  background: #050816;
+}
+
+.cvp__canvas,
+.cvp__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* poster sits under the canvas; canvas covers it once frames draw */
+.cvp__poster {
+  z-index: 0;
+}
+.cvp__canvas {
+  z-index: 1;
+}
+
+/* the real <video> is only a frame source */
+.cvp__video {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* if the video fails, hide the empty canvas and show the poster */
+.cvp--fallback .cvp__canvas {
+  display: none;
+}
+
+/* ---- calibration panel ---- */
+.cvp-debug {
+  margin-top: 10px;
+  font: 12px/1.4 ui-monospace, monospace;
+  color: #9db4d8;
+}
+.cvp-debug__time { margin: 4px 0 8px; }
+.cvp-debug__btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.cvp-debug button {
+  background: #0f172a;
+  color: #cfe0ff;
+  border: 1px solid #1e3a8a;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cvp-debug button:hover {
+  background: #1e3a8a;
+  border-color: #3b82f6;
+}
+.cvp-debug pre { white-space: pre-wrap; margin: 8px 0 0; color: #7dd3fc; }

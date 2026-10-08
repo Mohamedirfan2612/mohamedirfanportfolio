@@ -1,170 +1,69 @@
 import React from 'react';
 import { TIMELINE_DATA } from '../data/portfolioData';
-import { Briefcase, Calendar, CheckCircle, ChevronRight, Award } from 'lucide-react';
 
 export default function ExperienceTimeline() {
   return (
-    <section id="timeline" className="section-padding" style={{ position: 'relative' }}>
+    <section id="timeline" className="section">
       <div className="container">
-        
-        {/* Section Header */}
+
         <div className="section-header">
-          <div className="badge-neon" style={{ marginBottom: '14px' }}>
-            <span>CAREER EVOLUTION</span>
-          </div>
-          <h2 className="neon-title text-gradient" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
-            Experience & Journey
-          </h2>
-          <p className="section-subtitle">
-            A chronological timeline of engineering progression, mastering the full stack from foundation to scalable architecture.
-          </p>
+          <span className="section-label">Career</span>
+          <h2 className="display-2">Experience & Growth</h2>
+          <p>A focused progression from foundations to leading full-stack engineering projects.</p>
         </div>
 
-        {/* Timeline Container */}
-        <div style={{ maxWidth: '880px', margin: '0 auto', position: 'relative' }}>
-          
-          {/* Central Cyber Neon Spine */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '20px',
-              bottom: '20px',
-              left: '28px',
-              width: '2px',
-              background: 'linear-gradient(180deg, var(--primary-glow) 0%, var(--accent-cyan) 60%, transparent 100%)',
-              boxShadow: '0 0 10px rgba(168, 85, 247, 0.4)',
-              zIndex: 1
-            }}
-          />
+        <div style={{ maxWidth: '780px', position: 'relative', paddingLeft: '44px' }}>
+          {/* Spine */}
+          <div className="timeline-line" />
 
-          {/* Timeline Nodes */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '36px' }}>
-            {TIMELINE_DATA.map((item, index) => (
-              <div
-                key={item.year}
-                style={{
-                  position: 'relative',
-                  paddingLeft: '72px'
-                }}
-              >
-                {/* Year Marker Badge on Spine */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    left: '12px',
-                    top: '22px',
-                    width: '34px',
-                    height: '34px',
-                    borderRadius: '50%',
-                    background: index === 0 ? 'var(--primary)' : '#120f20',
-                    border: `2px solid ${index === 0 ? '#ffffff' : 'var(--primary-glow)'}`,
-                    boxShadow: index === 0 ? '0 0 15px var(--primary-glow)' : 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: 2,
-                    color: '#ffffff'
-                  }}
-                >
-                  <Calendar size={15} />
-                </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+            {TIMELINE_DATA.map((item, i) => (
+              <div key={item.year} style={{ position: 'relative' }}>
+                {/* Dot */}
+                <div className={`timeline-dot ${i === 0 ? 'active' : ''}`} />
 
-                {/* Timeline Card */}
-                <div
-                  className="glass-panel"
-                  style={{
-                    padding: '28px 26px',
-                    background: index === 0 ? 'rgba(26, 18, 44, 0.85)' : 'rgba(15, 12, 24, 0.75)',
-                    border: index === 0 ? '1px solid var(--border-glow)' : '1px solid var(--border-subtle)'
-                  }}
-                >
-                  {/* Top Bar: Year & Role */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      gap: '12px',
-                      marginBottom: '12px'
-                    }}
-                  >
+                {/* Card */}
+                <div className="card" style={{ padding: '24px 22px' }}>
+                  
+                  {/* Header row */}
+                  <div style={{
+                    display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start',
+                    justifyContent: 'space-between', gap: '10px', marginBottom: '10px'
+                  }}>
                     <div>
-                      <span
-                        className="badge-neon"
-                        style={{
-                          fontSize: '0.72rem',
-                          marginBottom: '8px',
-                          background: index === 0 ? 'rgba(168, 85, 247, 0.25)' : 'rgba(255, 255, 255, 0.05)'
-                        }}
-                      >
-                        {item.year} • {item.status}
+                      <span className={`tag ${i === 0 ? 'tag-blue' : 'tag-cyan'}`} style={{ marginBottom: '8px' }}>
+                        {item.year} · {item.status}
                       </span>
-                      <h3
-                        className="font-heading"
-                        style={{
-                          fontSize: '1.35rem',
-                          fontWeight: 700,
-                          color: '#ffffff'
-                        }}
-                      >
+                      <h3 style={{ fontWeight: 700, fontSize: '1.1rem', color: '#fff', lineHeight: 1.3 }}>
                         {item.role}
                       </h3>
                     </div>
-
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.85rem',
-                        color: 'var(--accent-cyan-glow)',
-                        background: 'rgba(6, 182, 212, 0.1)',
-                        border: '1px solid rgba(6, 182, 212, 0.25)',
-                        padding: '4px 12px',
-                        borderRadius: '6px'
-                      }}
-                    >
+                    <span style={{
+                      fontFamily: 'var(--font-code)', fontSize: '0.8rem', color: 'var(--text-300)',
+                      background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-1)',
+                      padding: '4px 12px', borderRadius: '6px', flexShrink: 0
+                    }}>
                       {item.company}
-                    </div>
+                    </span>
                   </div>
 
-                  {/* Description */}
-                  <p
-                    style={{
-                      color: 'var(--text-secondary)',
-                      fontSize: '0.92rem',
-                      lineHeight: 1.6,
-                      marginBottom: '18px'
-                    }}
-                  >
+                  <p style={{ color: 'var(--text-300)', fontSize: '0.9rem', lineHeight: 1.65, marginBottom: '14px' }}>
                     {item.description}
                   </p>
 
-                  {/* Highlights Bullet List */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {item.highlights.map((hl, hIdx) => (
-                      <div
-                        key={hIdx}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '10px',
-                          fontSize: '0.84rem',
-                          color: 'var(--text-accent)'
-                        }}
-                      >
-                        <ChevronRight size={14} color="var(--primary-glow)" />
-                        <span>{hl}</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    {item.highlights.map((h, hi) => (
+                      <div key={hi} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem' }}>
+                        <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--blue-light)', flexShrink: 0 }} />
+                        <span style={{ color: 'var(--text-300)' }}>{h}</span>
                       </div>
                     ))}
                   </div>
-
                 </div>
               </div>
             ))}
           </div>
-
         </div>
-
       </div>
     </section>
   );

@@ -119,7 +119,7 @@ export const PROJECTS_DATA = [
     badge: "MERN + WebSockets",
     description: "A high-performance workspace collaboration suite featuring live markdown document editing, kanban boards, real-time team chat, and role-based permissions.",
     tech: ["React.js", "Node.js", "Express.js", "MongoDB", "Socket.io", "Redis", "Tailwind CSS"],
-    imageTheme: "linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%)",
+    imageTheme: "linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%)",
     highlights: [
       "Sub-50ms latency real-time document synchronization via WebSockets",
       "Redis pub/sub message brokering for high concurrency",
@@ -137,7 +137,7 @@ export const PROJECTS_DATA = [
     badge: "React + Stripe + MongoDB",
     description: "Enterprise e-commerce ecosystem with dynamic product catalog filtering, cart persistence, automated Stripe checkout, admin telemetry dashboard, and inventory management.",
     tech: ["React 18", "Node.js", "Express", "MongoDB", "Redux Toolkit", "Stripe API", "Cloudinary"],
-    imageTheme: "linear-gradient(135deg, #581c87 0%, #0f172a 100%)",
+    imageTheme: "linear-gradient(135deg, #1d4ed8 0%, #0a0f1d 100%)",
     highlights: [
       "End-to-end webhook-verified Stripe payment processing",
       "Dynamic multi-criteria search and aggregation pipelines in MongoDB",
@@ -155,7 +155,7 @@ export const PROJECTS_DATA = [
     badge: "MERN + Monaco Editor",
     description: "A community platform for software engineers to share executable code snippets, write technical articles, follow peers, and discuss programming problems in real-time.",
     tech: ["React.js", "Node.js", "Express", "MongoDB", "Monaco Code Editor", "GraphQL", "JWT"],
-    imageTheme: "linear-gradient(135deg, #3b0764 0%, #1e1b4b 100%)",
+    imageTheme: "linear-gradient(135deg, #0369a1 0%, #0c1a30 100%)",
     highlights: [
       "Integrated Monaco Editor with syntax highlighting for 20+ languages",
       "Interactive comment threads with nested replies and like counters",
@@ -173,7 +173,7 @@ export const PROJECTS_DATA = [
     badge: "MERN + OpenAI API",
     description: "Intelligent productivity software that analyzes project roadmaps, generates auto-assigned agile tickets, summarizes meeting notes, and predicts project bottlenecks.",
     tech: ["React.js", "Node.js", "Express.js", "MongoDB", "OpenAI GPT-4o API", "Framer Motion"],
-    imageTheme: "linear-gradient(135deg, #6b21a8 0%, #111827 100%)",
+    imageTheme: "linear-gradient(135deg, #2563eb 0%, #090d16 100%)",
     highlights: [
       "AI prompt engineering pipeline generating structured sprint backlogs",
       "Custom drag-and-drop Kanban workflow with optimistic UI updates",
@@ -191,7 +191,7 @@ export const PROJECTS_DATA = [
     badge: "React + Three.js + Recharts",
     description: "A futuristic crypto analytics dashboard streaming live tick-by-tick prices, depth charts, 3D interactive market visualizers, and profit/loss portfolio calculations.",
     tech: ["React.js", "Node.js", "CoinGecko API", "WebSockets", "Three.js", "Recharts", "Zustand"],
-    imageTheme: "linear-gradient(135deg, #4a044e 0%, #030712 100%)",
+    imageTheme: "linear-gradient(135deg, #0e7490 0%, #030712 100%)",
     highlights: [
       "Live WebSocket streaming data pipeline with zero frame drops",
       "3D interactive token visualizer using Three.js WebGL particles",
@@ -209,7 +209,7 @@ export const PROJECTS_DATA = [
     badge: "Node.js + MongoDB GridFS + AWS S3",
     description: "Encrypted personal cloud storage with client-side AES-256 chunked encryption, resumable multipart uploads, expiring shareable links, and virus scanning.",
     tech: ["Node.js", "Express", "MongoDB GridFS", "AWS S3", "CryptoJS", "Docker", "React.js"],
-    imageTheme: "linear-gradient(135deg, #311042 0%, #09090b 100%)",
+    imageTheme: "linear-gradient(135deg, #1e40af 0%, #020617 100%)",
     highlights: [
       "Client-side AES-256 file encryption before network transfer",
       "Resumable multipart uploads with progress streaming",
