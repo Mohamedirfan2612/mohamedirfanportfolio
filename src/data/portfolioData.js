@@ -5,18 +5,18 @@ export const PERSONAL_INFO = {
   tagline: "Architecting scalable full-stack web applications, real-time microservices, and high-performance digital experiences.",
   bio: "I am a passionate MERN Stack Developer with deep expertise in designing robust backend systems with Node.js & Express, reactive frontends with React, scalable databases with MongoDB, and cloud infrastructure. I bridge the gap between intuitive UI/UX design and rock-solid server-side performance.",
   location: "India",
-  email: "mohamedirfan.dev@gmail.com",
+  email: "mohamedirfan2612@gmail.com",
+  phone: "+91 6383007813",
+  whatsapp: "+91 6383007813",
   availability: "Available for Full-time Roles & High-Impact Contracts",
-  yearsExperience: "3+",
+  yearsExperience: "1.5+",
   projectsCompleted: "25+",
   satisfiedClients: "100%",
   codeUptime: "99.9%",
   socials: {
-    github: "https://github.com",
-    linkedin: "https://linkedin.com",
-    twitter: "https://twitter.com",
-    discord: "https://discord.com",
-    whatsapp: "https://wa.me"
+    github: "https://github.com/Mohamedirfan2612",
+    linkedin: "https://www.linkedin.com/in/mohamed-irfan-762527252?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
+    whatsapp: "+91 6383007813"
   },
   resumeUrl: "#resume"
 };

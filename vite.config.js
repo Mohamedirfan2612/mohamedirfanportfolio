@@ -10,7 +10,10 @@ export default defineConfig({
     port: 3000,
     open: false,
     watch: {
-      ignored: ['**/*.mp4', '**/*.webm', '**/*.avi', '**/videos/**', '**/photo/**', '**/*.png', '**/*.jpg', '**/*.jpeg']
+      ignored: [
+        '**/*.mp4', '**/*.webm', '**/*.avi', '**/videos/**', '**/photo/**',
+        '**/*.png', '**/*.jpg', '**/*.jpeg', '**/skill/**', '**/*.md'
+      ]
     }
   },
   preview: {

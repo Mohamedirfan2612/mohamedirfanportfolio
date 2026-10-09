@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ProjectModal from './ProjectModal';
 import { ExternalLink, Layers } from 'lucide-react';
-import { GithubIcon, LinkedinIcon, TwitterIcon } from './Icons';
+import { GithubIcon, LinkedinIcon, WhatsappIcon } from './Icons';
 import './Projects.css';
 
 // =========================================================================
@@ -448,14 +448,14 @@ export default function Projects() {
       <section id="projects" className="work-parallax-section">
         {/* Left Social Dock */}
         <div className="work-left-dock" aria-hidden="true">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="GitHub">
+          <a href="https://github.com/Mohamedirfan2612" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="GitHub">
             <GithubIcon size={18} />
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="LinkedIn">
+          <a href="https://www.linkedin.com/in/mohamed-irfan-762527252?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="LinkedIn">
             <LinkedinIcon size={18} />
           </a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="X / Twitter">
-            <TwitterIcon size={18} />
+          <a href="https://wa.me/916383007813" target="_blank" rel="noopener noreferrer" className="work-dock-link" aria-label="WhatsApp">
+            <WhatsappIcon size={18} />
           </a>
         </div>
 

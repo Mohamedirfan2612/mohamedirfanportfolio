@@ -10,7 +10,8 @@ const COMMANDS = {
   education   · Academic background & certifications
   work        · List all featured projects with links
   projects    · Alias for work
-  contact     · Email & social links
+  contact     · Email, socials & WhatsApp
+  whatsapp    · Direct WhatsApp chat
   hire        · Availability & hiring info
   clear       · Clear this terminal
   matrix      · A little easter egg`,
@@ -58,10 +59,20 @@ DevOps    →  Docker, AWS, GitHub Actions, NGINX`,
   projects: () => PROJECTS_DATA.map((p, i) => `[${i + 1}] ${p.title}\n    Stack: ${p.badge}\n    Demo:  ${p.liveUrl}`).join('\n\n'),
 
   contact: () => `EMAIL:      ${PERSONAL_INFO.email}
+PHONE/WA:   ${PERSONAL_INFO.whatsapp}
 GITHUB:     ${PERSONAL_INFO.socials.github}
 LINKEDIN:   ${PERSONAL_INFO.socials.linkedin}
-TWITTER:    ${PERSONAL_INFO.socials.twitter}
 STATUS:     ${PERSONAL_INFO.availability}`,
+
+  whatsapp: () => `WHATSAPP / PHONE:
+━━━━━━━━━━━━━━━━━
+Number : ${PERSONAL_INFO.whatsapp}
+Status : Available on WhatsApp & Call`,
+
+  phone: () => `WHATSAPP / PHONE:
+━━━━━━━━━━━━━━━━━
+Number : ${PERSONAL_INFO.whatsapp}
+Status : Available on WhatsApp & Call`,
 
   hire: () => `>>> AVAILABILITY: OPEN FOR WORK
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -141,6 +152,7 @@ export default function TerminalPlayground() {
       else if (cmd === 'project' || cmd === 'projects' || cmd === 'work') fn = COMMANDS.work;
       else if (cmd === 'education' || cmd === 'edu') fn = COMMANDS.education;
       else if (cmd === 'contact' || cmd === 'email') fn = COMMANDS.contact;
+      else if (cmd === 'whatsapp' || cmd === 'wa' || cmd === 'chat' || cmd === 'phone' || cmd === 'number') fn = COMMANDS.whatsapp;
     }
 
     next.push(fn

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import confetti from 'canvas-confetti';
 import { Mail, Copy, Check, Send, MapPin, ArrowRight } from 'lucide-react';
-import { GithubIcon, LinkedinIcon, TwitterIcon } from './Icons';
+import { GithubIcon, LinkedinIcon, WhatsappIcon } from './Icons';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
@@ -111,7 +111,7 @@ export default function Contact() {
                 {[
                   { href: PERSONAL_INFO.socials.github, icon: <GithubIcon size={17} />, label: 'GitHub' },
                   { href: PERSONAL_INFO.socials.linkedin, icon: <LinkedinIcon size={17} />, label: 'LinkedIn' },
-                  { href: PERSONAL_INFO.socials.twitter, icon: <TwitterIcon size={17} />, label: 'Twitter' },
+                  { href: `https://wa.me/${(PERSONAL_INFO.whatsapp || '').replace(/\D/g, '')}`, icon: <WhatsappIcon size={17} />, label: 'WhatsApp' },
                 ].map(s => (
                   <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
                     className="btn btn-secondary" style={{ flex: 1, padding: '10px 8px' }} title={s.label}>
