@@ -1,21 +1,45 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { PERSONAL_INFO, PROJECTS_DATA } from '../data/portfolioData';
+import { PERSONAL_INFO, PROJECTS_DATA, TIMELINE_DATA } from '../data/portfolioData';
 import { CornerDownLeft } from 'lucide-react';
 
 const COMMANDS = {
   help: () => `AVAILABLE COMMANDS:
-  about      · Developer info & background
-  stack      · Core MERN tech expertise
-  projects   · List all featured projects
-  contact    · Email & social links
-  hire       · Availability & hiring info
-  clear      · Clear this terminal
-  matrix     · A little easter egg`,
+  about       · Developer info & background
+  experience  · Professional career history & roles
+  skills      · Core technical stack & expertise
+  education   · Academic background & certifications
+  work        · List all featured projects with links
+  projects    · Alias for work
+  contact     · Email & social links
+  hire        · Availability & hiring info
+  clear       · Clear this terminal
+  matrix      · A little easter egg`,
 
   about: () => `${PERSONAL_INFO.name}  |  ${PERSONAL_INFO.role}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${PERSONAL_INFO.bio}
 Experience: ${PERSONAL_INFO.yearsExperience} Years  ·  Projects: ${PERSONAL_INFO.projectsCompleted}`,
+
+  experience: () => `WORK EXPERIENCE & CAREER TIMELINE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+` + TIMELINE_DATA.map((t, i) => `[${i + 1}] ${t.role} (${t.year} · ${t.status})
+    Company: ${t.company}
+    Summary: ${t.description}
+    Impact:  ${t.highlights.join(' · ')}`).join('\n\n'),
+
+  exp: () => `WORK EXPERIENCE & CAREER TIMELINE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+` + TIMELINE_DATA.map((t, i) => `[${i + 1}] ${t.role} (${t.year} · ${t.status})
+    Company: ${t.company}
+    Summary: ${t.description}
+    Impact:  ${t.highlights.join(' · ')}`).join('\n\n'),
+
+  skills: () => `CORE TECHNICAL STACK:
+━━━━━━━━━━━━━━━━━━━━━━
+Frontend  →  React 18, Next.js, Redux, TypeScript, Three.js
+Backend   →  Node.js, Express.js, REST APIs, GraphQL, Socket.io
+Database  →  MongoDB, Mongoose, Redis, PostgreSQL
+DevOps    →  Docker, AWS, GitHub Actions, NGINX`,
 
   stack: () => `CORE TECHNICAL STACK:
 ━━━━━━━━━━━━━━━━━━━━━━
@@ -24,7 +48,14 @@ Backend   →  Node.js, Express.js, REST APIs, GraphQL, Socket.io
 Database  →  MongoDB, Mongoose, Redis, PostgreSQL
 DevOps    →  Docker, AWS, GitHub Actions, NGINX`,
 
-  projects: () => PROJECTS_DATA.map((p, i) => `[${i + 1}] ${p.title}\n    Stack: ${p.badge}\n    Demo: ${p.liveUrl}`).join('\n\n'),
+  education: () => `EDUCATION & QUALIFICATIONS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+[1] B.E. Computer Science & Engineering — Mailam Engineering College (2024)
+[2] Java Full Stack Development — GUVI Geek Network (2025)`,
+
+  work: () => PROJECTS_DATA.map((p, i) => `[${i + 1}] ${p.title}\n    Stack: ${p.badge}\n    Demo:  ${p.liveUrl}`).join('\n\n'),
+
+  projects: () => PROJECTS_DATA.map((p, i) => `[${i + 1}] ${p.title}\n    Stack: ${p.badge}\n    Demo:  ${p.liveUrl}`).join('\n\n'),
 
   contact: () => `EMAIL:      ${PERSONAL_INFO.email}
 GITHUB:     ${PERSONAL_INFO.socials.github}
@@ -40,10 +71,39 @@ ${PERSONAL_INFO.name} is available for full-time roles and high-impact contracts
   matrix: () => `01001101 01000101 01010010 01001110\n>>> FOLLOW THE WHITE RABBIT, NEO.`,
 };
 
+function renderTextWithLinks(text) {
+  if (typeof text !== 'string') return text;
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const parts = text.split(urlRegex);
+
+  return parts.map((part, index) => {
+    if (part.match(urlRegex)) {
+      return (
+        <a
+          key={index}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: 'inherit',
+            textDecoration: 'underline',
+            textUnderlineOffset: '2px',
+            cursor: 'pointer'
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+}
+
 export default function TerminalPlayground() {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState([
-    { type: 'system', text: `Mohamed Irfan CLI  v1.0.0  ·  Node ${navigator.userAgent.includes('Chrome') ? 'Chrome' : 'Browser'}` },
+    { type: 'system', text: `Mohamed Irfan CLI  v1.0.0  ·  Node ${typeof navigator !== 'undefined' && navigator.userAgent.includes('Chrome') ? 'Chrome' : 'Browser'}` },
     { type: 'muted', text: 'Type "help" to see all available commands.' },
   ]);
   const outputRef = useRef(null);
@@ -62,10 +122,11 @@ export default function TerminalPlayground() {
 
   const run = (e) => {
     e.preventDefault();
-    const cmd = input.trim().toLowerCase();
-    if (!cmd) return;
+    const raw = input.trim();
+    if (!raw) return;
 
-    const next = [...history, { type: 'input', text: `$ ${input}` }];
+    const cmd = raw.toLowerCase();
+    const next = [...history, { type: 'input', text: `$ ${raw}` }];
 
     if (cmd === 'clear') {
       setHistory([]);
@@ -73,10 +134,18 @@ export default function TerminalPlayground() {
       return;
     }
 
-    const fn = COMMANDS[cmd];
+    let fn = COMMANDS[cmd];
+    if (!fn) {
+      if (cmd === 'skill' || cmd === 'skills') fn = COMMANDS.skills;
+      else if (cmd === 'experience' || cmd === 'exp' || cmd === 'experince' || cmd === 'career') fn = COMMANDS.experience;
+      else if (cmd === 'project' || cmd === 'projects' || cmd === 'work') fn = COMMANDS.work;
+      else if (cmd === 'education' || cmd === 'edu') fn = COMMANDS.education;
+      else if (cmd === 'contact' || cmd === 'email') fn = COMMANDS.contact;
+    }
+
     next.push(fn
       ? { type: 'output', text: fn() }
-      : { type: 'error', text: `Command not found: "${cmd}". Type "help" for the command list.` }
+      : { type: 'error', text: `Command not found: "${raw}". Type "help" for the command list.` }
     );
 
     setHistory(next);
@@ -139,7 +208,7 @@ export default function TerminalPlayground() {
                     : line.type === 'error' ? '#f87171'
                     : 'var(--blue-bright)'
                 }}>
-                  {line.text}
+                  {renderTextWithLinks(line.text)}
                 </div>
               ))}
             </div>
